@@ -52,3 +52,4 @@ The only remaining problem is proving other minds feel things, which cannot be d
 
 To reject it is to step outside the possibility of having a view at all.
 
+Live Demo: https://innomen.github.io/Sourcerer-Ludi/Ludi.html
