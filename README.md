@@ -1,4 +1,4 @@
-# Sourcerer-Ludi
+# Sourcerer Ludi
 The Experiential Frame Game
 
 Live Demo: https://innomen.github.io/Sourcerer-Ludi/Ludi.html
