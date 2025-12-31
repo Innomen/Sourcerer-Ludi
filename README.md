@@ -53,3 +53,5 @@ Regularity is just what’s given. Positing an unseen cause for it is both circu
 The only remaining problem is proving other minds feel things, which cannot be done, but that is operationally irrelevant because clearly they exist as sources of experience patterns. I choose not to be cruel. That’s the logical and phenomenological ground zero of any possible epistemology.
 
 To reject it is to step outside the possibility of having a view at all.
+
+Based on the work more fully explored here: https://philpeople.org/profiles/brandon-sergent/publications
