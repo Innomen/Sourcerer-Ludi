@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sourcerer Ludi | Experiential Frame Game</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f5f5f5;
+            color: #222;
+            padding: 20px;
+            line-height: 1.4;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+            border-bottom: 3px solid #000;
+            padding-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            letter-spacing: 6px;
+            color: #000;
+            margin-bottom: 5px;
+            font-weight: 900;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 0.8em;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .controls {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background: #fff;
+            color: #000;
+            border: 2px solid #000;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: 'Arial', sans-serif;
+            font-size: 0.9em;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            background: #000;
+            color: #fff;
+        }
+
+        button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            background: #ccc;
+            border-color: #999;
+        }
+
+        .status {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1em;
+            font-weight: bold;
+        }
+
+        .hand {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: #fff;
+            border: 3px solid #000;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            aspect-ratio: 2.5 / 3.5;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 4px 4px 0 #000;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid #000;
+        }
+
+        .card-suite {
+            font-weight: 900;
+            font-size: 1.2em;
+            line-height: 1;
+        }
+
+        .card-value {
+            font-size: 0.7em;
+            color: #666;
+            font-weight: bold;
+        }
+
+        .card-label {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+            line-height: 1.1;
+        }
+
+        .card-desc {
+            font-size: 0.75em;
+            color: #444;
+            line-height: 1.3;
+            flex-grow: 1;
+        }
+
+        .card-position {
+            display: flex;
+            gap: 3px;
+            margin-top: 8px;
+            justify-content: center;
+        }
+
+        .pos-dot {
+            width: 8px;
+            height: 8px;
+            background: #ddd;
+            border: 1px solid #999;
+        }
+
+        .pos-dot.active {
+            background: #000;
+        }
+
+        .validation {
+            background: #fff;
+            border: 3px solid #000;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .valid { color: #000; font-weight: bold; font-size: 1.3em; }
+        .invalid { color: #000; font-weight: bold; font-size: 1.3em; }
+
+        .constraint-list { margin-top: 12px; font-size: 0.85em; }
+        .constraint-item { margin: 6px 0; padding-left: 15px; color: #666; }
+        .constraint-item.violated { color: #000; font-weight: bold; }
+
+        .vector-display {
+            background: #f5f5f5;
+            border: 2px solid #ccc;
+            padding: 12px;
+            margin-top: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.75em;
+            word-break: break-all;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.9);
+            padding: 30px;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            max-width: 850px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 40px;
+            color: #222;
+            border: 5px solid #000;
+        }
+
+        .modal h2 { margin-bottom: 20px; font-size: 2em; text-decoration: underline; }
+        .modal h3 { margin-top: 30px; margin-bottom: 10px; font-size: 1.2em; color: #000; }
+        .modal p { margin-bottom: 15px; font-size: 0.95em; line-height: 1.6; }
+        .modal ul { margin-bottom: 20px; padding-left: 20px; }
+        .modal li { margin-bottom: 8px; font-size: 0.95em; }
+
+        .survey-row {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            background: #fff;
+        }
+
+        .survey-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .survey-label { font-weight: bold; font-size: 0.9em; text-transform: uppercase; }
+        .survey-value-display { font-family: 'Courier New', monospace; background: #000; color: #fff; padding: 2px 8px; font-size: 0.85em; }
+        .survey-slider { width: 100%; height: 12px; accent-color: #000; cursor: pointer; }
+        .survey-info { margin-top: 12px; background: #f9f9f9; padding: 12px; border-left: 3px solid #000; }
+        .survey-info b { display: block; margin-bottom: 4px; text-transform: uppercase; }
+        .survey-info p { margin: 0; font-size: 0.85em; color: #444; }
+
+        @media (max-width: 600px) {
+            .hand { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>SOURCERER LUDI</h1>
+            <div class="subtitle">The Experiential Frame Game</div>
+        </header>
+
+        <div class="controls">
+            <button onclick="game.drawCard()" id="draw-btn">DRAW CARD</button>
+            <button onclick="game.checkCoherence()" id="check-btn">CHECK COHERENCE</button>
+            <button onclick="game.autoWin()" id="win-btn">AUTO-WIN</button>
+            <button onclick="showSurvey()">SURVEY</button>
+            <button onclick="game.newGame()">NEW GAME</button>
+            <button onclick="showAbout()">ABOUT</button>
+        </div>
+
+        <div class="status">
+            <span id="hand-status">Hand: 0/6</span>
+            <span style="margin: 0 15px;">|</span>
+            <span id="deck-status">Deck: 0</span>
+        </div>
+
+        <div id="hand" class="hand"></div>
+
+        <div id="validation" class="validation" style="display:none;">
+            <div id="validity-status"></div>
+            <div id="constraints" class="constraint-list"></div>
+            <div id="vector" class="vector-display"></div>
+        </div>
+    </div>
+
+    <!-- About Modal with Updated Content -->
+    <div id="about-modal" class="modal">
+        <div class="modal-content">
+            <h2>SOURCERER LUDI</h2>
+            <p>Sourcerer Ludi is simultaneously:</p>
+            <ul>
+                <li><strong>A playable card game:</strong> Draw/discard to build valid experiential frames, with survey and auto-complete mechanics.</li>
+                <li><strong>A working phenomenological model:</strong> Six dimensions actually specify experiential states; frames can be tested for coherence.</li>
+                <li><strong>An educational demonstration of EE principles:</strong> Shows that experience is complete without external reality (the Magic Window made concrete).</li>
+                <li><strong>Foundation for Game Theory 2.0:</strong> Enables precise modeling of experiential states for any agent (Nash's players, fictional characters, organisms) without ontological commitment.</li>
+            </ul>
+
+            <p>It's a game that <em>is</em> the model. Not teaching about the model: the gameplay mechanics ARE phenomenological measurement. Like how chess teaches strategy by being strategy, not by explaining it.</p>
+
+            <p>The physical deck makes it shareable (play with anyone). The digital version makes it extensible (survey, frame extraction, sequence modeling). The theoretical grounding makes it rigorous (falsifiable constraints, measurable dimensions).</p>
+
+            <p><strong>A Trojan horse:</strong> looks like a simple card game, functions as consciousness cartography, demonstrates that externalism is unnecessary.</p>
+
+            <h3>EXPERIENTIAL EMPIRICISM (EE)</h3>
+            <p>All evidence is present experience. Time as well as space and matter are all patterns within experience, attributes of the present experiential moment. You cannot use experience to prove something outside it: that’s circular, assuming the conclusion. Experience and logic are ALL that survive burden of proof.</p>
+
+            <p>Where appropriate I call this new field Sourcery, as EE provides access to the shared ground under philosophy and science by dissolving the subject/object divide.</p>
+
+            <p>This is the polar opposite of eliminative materialism. Instead of absurdly saying my experiences don’t exist, which is axiomatically false since I’m having one while saying it, I simply stick with only that which is self-proving: <strong>Experience and logic.</strong></p>
+
+            <h3>THE MAGIC WINDOW</h3>
+            <p>The Magic Window is a thought experiment demonstrating that the problem of "external reality" is logical, not sensory. Imagine a device that bypasses all sensory organs and inserts perfect, direct knowledge of mind-independent material reality into your consciousness. Even in this scenario, your verification of that reality remains an experiential event. You are still looking at patterns within consciousness.</p>
+
+            <p>This reveals that no possible operation can verify a non-experiential cause without that verification being experiential itself. Accessing "external reality" would only ever provide more experiential patterns, making the materialist interpretation an explanatorily idle story added onto the patterns we already have.</p>
+
+            <p>Why posit a metaphysical external that does no work beyond adding confusion? Patterns of experience alone are exhaustively sufficient. We don’t also need stories about the patterns. People keep assuming events sit in a container (space, time, thought, god, simulation), despite all evidence of the container being more present self-contained experience. Formally make experience the axiom, skip the middle men, and watch the problems vanish.</p>
+
+            <h3>THE AXOMATIC FRAMEWORK</h3>
+            <p>EE applies burden of proof ruthlessly. This eliminates materialism, external time, and spatial externality as unjustified assumptions. What remains are two self-proving axioms:</p>
+            <ul>
+                <li><strong>Experience exists:</strong> proven by occurring.</li>
+                <li><strong>Logic works:</strong> proven by use.</li>
+            </ul>
+
+            <p>Physical laws describe experiential regularities, not hidden substances. Problems like consciousness, quantum measurement, and free will dissolve as artifacts of the discarded externalist assumption. Science requires no methodological changes because it was always mapping experiential patterns.</p>
+
+            <h3>THE SELF-CONTAINED VIEW</h3>
+            <ul>
+                <li><strong>Metaphysics:</strong> Only experiential moments, with time and space as structural features within them.</li>
+                <li><strong>Epistemology:</strong> Justified by occurrence (experience) and coherence (logic-in-use).</li>
+                <li><strong>Ethics:</strong> Managed by navigating and shaping valence patterns.</li>
+                <li><strong>Science:</strong> Describes stable, recurrent experiential correlations.</li>
+            </ul>
+
+            <p>Regularity is just what’s given. Positing an unseen cause for it is both circular and superfluous. I limit my system to the fewest number of axioms possible for the same reason I respect burden of proof and parsimony.</p>
+
+            <p>The only remaining problem is proving other minds feel things, which cannot be done, but that is operationally irrelevant because clearly they exist as sources of experience patterns. I choose not to be cruel. That’s the logical and phenomenological ground zero of any possible epistemology.</p>
+
+            <p>To reject it is to step outside the possibility of having a view at all.</p>
+
+            <button onclick="hideAbout()" style="width:100%; margin-top:20px; padding: 15px; font-size: 1.1em; background: #000; color: #fff;">RETURN TO GAME</button>
+        </div>
+    </div>
+
+    <div id="survey-modal" class="modal">
+        <div class="modal-content">
+            <h2>PHENOMENOLOGICAL SURVEY</h2>
+            <div id="survey-rows-container"></div>
+            <div style="display: flex; gap: 10px; margin-top: 30px;">
+                <button onclick="applySurvey()" style="flex: 2; background: #000; color: #fff;">APPLY TO FRAME</button>
+                <button onclick="hideSurvey()" style="flex: 1;">CANCEL</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /** * ==========================================
+         * PHENOMENOLOGICAL DATA (The "Words")
+         * Edit this section to refine the model.
+         * ==========================================
+         */
+        const LUDI_MODEL = {
+            dimensions: [
+                { id: 'I', suite: 'IDENTITY' },
+                { id: 'M', suite: 'MENTALITY' },
+                { id: 'F', suite: 'FOCUS' },
+                { id: 'A', suite: 'AFFECT' },
+                { id: 'S', suite: 'SENSORY' },
+                { id: 'T', suite: 'TEMPORAL' }
+            ],
+
+            cards: [
+                // IDENTITY
+                {dim: 'I', val: 0.00, label: 'Dissolved', desc: 'No sense of separate self. Complete boundary loss. Unity with environment.'},
+                {dim: 'I', val: 0.17, label: 'Fragmented', desc: 'Weak self-boundaries. Feeling disconnected from own actions and thoughts.'},
+                {dim: 'I', val: 0.33, label: 'Diffuse', desc: 'Blurry self-concept. Uncertain who you are or what defines you.'},
+                {dim: 'I', val: 0.50, label: 'Baseline', desc: 'Normal everyday self-sense. Clear "I" without extreme features.'},
+                {dim: 'I', val: 0.67, label: 'Strong', desc: 'Solid sense of self. Clear personal boundaries and continuity.'},
+                {dim: 'I', val: 0.83, label: 'Sharp', desc: 'Very distinct self/other boundary. Strong agency and ownership.'},
+                {dim: 'I', val: 1.00, label: 'Crystalline', desc: 'Absolutely unified self. Crystal clear identity and full agency.'},
+
+                // MENTALITY
+                {dim: 'M', val: 0.00, label: 'Blank', desc: 'Complete absence of thought. Empty mind without internal voice.'},
+                {dim: 'M', val: 0.17, label: 'Dimmed', desc: 'Barely conscious thinking. Thoughts barely register before fading.'},
+                {dim: 'M', val: 0.33, label: 'Foggy', desc: 'Clouded cognition. Difficulty forming or holding coherent thoughts.'},
+                {dim: 'M', val: 0.50, label: 'Baseline', desc: 'Normal thinking clarity. Standard cognitive processing speed.'},
+                {dim: 'M', val: 0.67, label: 'Clear', desc: 'Sharp thinking. Ideas flow smoothly with good coherence.'},
+                {dim: 'M', val: 0.83, label: 'Brilliant', desc: 'Exceptionally clear cognition. Rapid, precise thought processing.'},
+                {dim: 'M', val: 1.00, label: 'Hyperlucid', desc: 'Overwhelming mental clarity. Every thought crystalline and vivid.'},
+
+                // FOCUS
+                {dim: 'F', val: 0.00, label: 'Scattered', desc: 'Complete distraction. Attention pulled everywhere at once.'},
+                {dim: 'F', val: 0.17, label: 'Drifting', desc: 'Weak attention control. Thoughts wander constantly and easily.'},
+                {dim: 'F', val: 0.33, label: 'Restless', desc: 'Difficulty concentrating. Attention shifts frequently.'},
+                {dim: 'F', val: 0.50, label: 'Baseline', desc: 'Normal attention. Can focus when needed, naturally shifts.'},
+                {dim: 'F', val: 0.67, label: 'Engaged', desc: 'Good concentration. Can hold attention steadily on tasks.'},
+                {dim: 'F', val: 0.83, label: 'Locked', desc: 'Deep focus. Strong resistance to distraction and drift.'},
+                {dim: 'F', val: 1.00, label: 'Absorbed', desc: 'Total immersion. Complete capture by single point of attention.'},
+
+                // AFFECT
+                {dim: 'A', val: -1.00, label: 'Anguish', desc: 'Intense suffering. Overwhelming negative experience dominates.'},
+                {dim: 'A', val: -0.67, label: 'Distressed', desc: 'Strong negative tone. Clear suffering colors experience.'},
+                {dim: 'A', val: -0.33, label: 'Uneasy', desc: 'Mild discomfort. Slightly negative valence, noticeable.'},
+                {dim: 'A', val: 0.00, label: 'Neutral', desc: 'Flat emotional tone. Neither pleasant nor unpleasant.'},
+                {dim: 'A', val: 0.33, label: 'Pleasant', desc: 'Mild positive feeling. Subtle sense of okayness.'},
+                {dim: 'A', val: 0.67, label: 'Joyful', desc: 'Strong positive tone. Clear sense of wellbeing.'},
+                {dim: 'A', val: 1.00, label: 'Blissful', desc: 'Intense flourishing. Overwhelming positive experience.'},
+
+                // SENSORY
+                {dim: 'S', val: 0.00, label: 'Numb', desc: 'Complete sensory muting. World feels distant.'},
+                {dim: 'S', val: 0.17, label: 'Muted', desc: 'Very dull perception. Senses feel dampened.'},
+                {dim: 'S', val: 0.33, label: 'Dim', desc: 'Low sensory intensity. Perception lacks richness.'},
+                {dim: 'S', val: 0.50, label: 'Baseline', desc: 'Normal perception. Standard sensory vividness.'},
+                {dim: 'S', val: 0.67, label: 'Vivid', desc: 'Enhanced perception. Details appear richer.'},
+                {dim: 'S', val: 0.83, label: 'Heightened', desc: 'Very intense senses. World feels unusually real.'},
+                {dim: 'S', val: 1.00, label: 'Hyperreal', desc: 'Everything impossibly vivid and detailed.'},
+
+                // TEMPORAL
+                {dim: 'T', val: 0.00, label: 'Timeless', desc: 'No time-sense. Loss of duration awareness.'},
+                {dim: 'T', val: 0.17, label: 'Confused', desc: 'Weak time-sense. Uncertain how long anything lasts.'},
+                {dim: 'T', val: 0.33, label: 'Hazy', desc: 'Unclear duration sense. Poor temporal precision.'},
+                {dim: 'T', val: 0.50, label: 'Baseline', desc: 'Normal time-sense. Standard flow awareness.'},
+                {dim: 'T', val: 0.67, label: 'Clear', desc: 'Good temporal awareness. Confident estimates.'},
+                {dim: 'T', val: 0.83, label: 'Sharp', desc: 'Precise time-sense. Absolute confidence.'},
+                {dim: 'T', val: 1.00, label: 'Crystalline', desc: 'Perfect temporal certainty. Clarity of flow.'}
+            ],
+
+            constraints: [
+                {
+                    check: (f) => f.I < 0.2 && f.T > 0.7,
+                    msg: "High temporal certainty requires coherent identity"
+                },
+                {
+                    check: (f) => f.M < 0.2 && f.F > 0.7,
+                    msg: "High focus requires mental content"
+                },
+                {
+                    check: (f) => f.A < -0.7 && f.T > 0.7,
+                    msg: "Extreme suffering rarely coexists with high temporal certainty"
+                },
+                {
+                    check: (f) => f.I < 0.2 && f.F > 0.8,
+                    msg: "Dissolved self unlikely to have pinpoint focus"
+                }
+            ]
+        };
+
+        class LudiEngine {
+            constructor() {
+                this.hand = [];
+                this.deck = [];
+                this.newGame();
+            }
+
+            newGame() {
+                this.deck = [...LUDI_MODEL.cards].sort(() => Math.random() - 0.5);
+                this.hand = [];
+                for (let i = 0; i < 6; i++) this.drawCard();
+                document.getElementById('validation').style.display = 'none';
+                this.updateDisplay();
+            }
+
+            drawCard() {
+                if (this.hand.length >= 6) return;
+                if (this.deck.length === 0) {
+                    this.deck = [...LUDI_MODEL.cards].sort(() => Math.random() - 0.5);
+                }
+                this.hand.push(this.deck.pop());
+                this.updateDisplay();
+            }
+
+            discardCard(index) {
+                this.hand.splice(index, 1);
+                this.updateDisplay();
+            }
+
+            getFrame() {
+                const frame = {};
+                this.hand.forEach(c => frame[c.dim] = c.val);
+                return frame;
+            }
+
+            checkCoherence() {
+                const dims = new Set(this.hand.map(c => c.dim));
+                if (dims.size < 6 || this.hand.length !== 6) return;
+
+                const frame = this.getFrame();
+                const violations = LUDI_MODEL.constraints
+                    .filter(c => c.check(frame))
+                    .map(c => c.msg);
+
+                const valDiv = document.getElementById('validation');
+                valDiv.style.display = 'block';
+
+                document.getElementById('validity-status').innerHTML = violations.length === 0
+                    ? '<span class="valid">✓ COHERENT FRAME</span>'
+                    : '<span class="invalid">⚠ CONSTRAINT VIOLATIONS</span>';
+
+                document.getElementById('constraints').innerHTML = violations.length === 0
+                    ? '<div class="constraint-item">This state is phenomenologically stable.</div>'
+                    : violations.map(v => `<div class="constraint-item violated">• ${v}</div>`).join('');
+
+                document.getElementById('vector').textContent = JSON.stringify(frame).replace(/"/g, '');
+            }
+
+            autoWin() {
+                let attempts = 0;
+                while (attempts < 500) {
+                    const testHand = LUDI_MODEL.dimensions.map(d => {
+                        const choices = LUDI_MODEL.cards.filter(c => c.dim === d.id);
+                        return choices[Math.floor(Math.random() * choices.length)];
+                    });
+                    const frame = {};
+                    testHand.forEach(c => frame[c.dim] = c.val);
+                    if (!LUDI_MODEL.constraints.some(c => c.check(frame))) {
+                        this.hand = testHand;
+                        break;
+                    }
+                    attempts++;
+                }
+                this.updateDisplay();
+                this.checkCoherence();
+            }
+
+            updateDisplay() {
+                const handDiv = document.getElementById('hand');
+                handDiv.innerHTML = '';
+
+                const order = LUDI_MODEL.dimensions.map(d => d.id);
+                this.hand.sort((a, b) => order.indexOf(a.dim) - order.indexOf(b.dim));
+
+                this.hand.forEach((card, idx) => {
+                    const suite = LUDI_MODEL.dimensions.find(d => d.id === card.dim).suite;
+                    const el = document.createElement('div');
+                    el.className = 'card';
+                    el.onclick = () => this.discardCard(idx);
+
+                    const valMap = LUDI_MODEL.cards.filter(c => c.dim === card.dim).map(c => c.val);
+                    const dots = valMap.map(v => `<div class="pos-dot ${v === card.val ? 'active' : ''}"></div>`).join('');
+
+                    el.innerHTML = `
+                        <div class="card-header">
+                            <div class="card-suite">${suite}</div>
+                            <div class="card-value">${card.val.toFixed(2)}</div>
+                        </div>
+                        <div class="card-label">${card.label}</div>
+                        <div class="card-desc">${card.desc}</div>
+                        <div class="card-position">${dots}</div>
+                    `;
+                    handDiv.appendChild(el);
+                });
+
+                document.getElementById('hand-status').textContent = `Hand: ${this.hand.length}/6`;
+                document.getElementById('deck-status').textContent = `Deck: ${this.deck.length}`;
+                document.getElementById('draw-btn').disabled = this.hand.length >= 6;
+                document.getElementById('check-btn').disabled = this.hand.length !== 6;
+            }
+        }
+
+        const game = new LudiEngine();
+
+        function initSurvey() {
+            const container = document.getElementById('survey-rows-container');
+            container.innerHTML = '';
+            LUDI_MODEL.dimensions.forEach(dim => {
+                const row = document.createElement('div');
+                row.className = 'survey-row';
+                row.innerHTML = `
+                    <div class="survey-header">
+                        <span class="survey-label">${dim.suite}</span>
+                        <span class="survey-value-display" id="sv-${dim.id}">0.50</span>
+                    </div>
+                    <input type="range" class="survey-slider" id="sl-${dim.id}" min="0" max="6" value="3" oninput="syncSurvey('${dim.id}')">
+                    <div class="survey-info">
+                        <b id="sl-lbl-${dim.id}">Baseline</b>
+                        <p id="sl-dsc-${dim.id}">Loading...</p>
+                    </div>
+                `;
+                container.appendChild(row);
+                syncSurvey(dim.id);
+            });
+        }
+
+        function syncSurvey(dimId) {
+            const idx = document.getElementById(`sl-${dimId}`).value;
+            const card = LUDI_MODEL.cards.filter(c => c.dim === dimId)[idx];
+            document.getElementById(`sv-${dimId}`).textContent = card.val.toFixed(2);
+            document.getElementById(`sl-lbl-${dimId}`).textContent = card.label;
+            document.getElementById(`sl-dsc-${dimId}`).textContent = card.desc;
+        }
+
+        function applySurvey() {
+            game.hand = LUDI_MODEL.dimensions.map(dim => {
+                const idx = document.getElementById(`sl-${dim.id}`).value;
+                return LUDI_MODEL.cards.filter(c => c.dim === dim.id)[idx];
+            });
+            hideSurvey();
+            game.updateDisplay();
+            game.checkCoherence();
+        }
+
+        function showSurvey() { initSurvey(); document.getElementById('survey-modal').style.display = 'block'; }
+        function hideSurvey() { document.getElementById('survey-modal').style.display = 'none'; }
+        function showAbout() { document.getElementById('about-modal').style.display = 'block'; }
+        function hideAbout() { document.getElementById('about-modal').style.display = 'none'; }
+    </script>
+</body>
+</html>
