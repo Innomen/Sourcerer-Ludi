@@ -1,6 +1,8 @@
 # Sourcerer-Ludi
 The Experiential Frame Game
 
+Live Demo: https://innomen.github.io/Sourcerer-Ludi/Ludi.html
+
 Sourcerer Ludi is simultaneously:
 
 * **A playable card game:** Draw/discard to build valid experiential frames, with survey and auto-complete mechanics.  
@@ -51,5 +53,3 @@ Regularity is just what’s given. Positing an unseen cause for it is both circu
 The only remaining problem is proving other minds feel things, which cannot be done, but that is operationally irrelevant because clearly they exist as sources of experience patterns. I choose not to be cruel. That’s the logical and phenomenological ground zero of any possible epistemology.
 
 To reject it is to step outside the possibility of having a view at all.
-
-Live Demo: https://innomen.github.io/Sourcerer-Ludi/Ludi.html
