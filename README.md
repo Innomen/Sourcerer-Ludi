@@ -1,8 +1,6 @@
 # Sourcerer-Ludi
 The Experiential Frame Game
 
-## **SOURCERER LUDI**
-
 Sourcerer Ludi is simultaneously:
 
 * **A playable card game:** Draw/discard to build valid experiential frames, with survey and auto-complete mechanics.  
