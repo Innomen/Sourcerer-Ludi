@@ -113,7 +113,7 @@
             border-bottom: 2px solid #000;
         }
 
-        .card-suite {
+        .card-suit {
             font-weight: 900;
             font-size: 1.2em;
             line-height: 1;
@@ -242,7 +242,6 @@
 
         <div class="controls">
             <button onclick="game.drawCard()" id="draw-btn">DRAW CARD</button>
-            <button onclick="game.checkCoherence()" id="check-btn">CHECK COHERENCE</button>
             <button onclick="game.autoWin()" id="win-btn">AUTO-WIN</button>
             <button onclick="showSurvey()">SURVEY</button>
             <button onclick="game.newGame()">NEW GAME</button>
@@ -257,11 +256,6 @@
 
         <div id="hand" class="hand"></div>
 
-        <div id="validation" class="validation" style="display:none;">
-            <div id="validity-status"></div>
-            <div id="constraints" class="constraint-list"></div>
-            <div id="vector" class="vector-display"></div>
-        </div>
     </div>
 
     <!-- About Modal with Updated Content -->
@@ -342,23 +336,23 @@
          */
         const LUDI_MODEL = {
             dimensions: [
-                { id: 'I', suite: 'IDENTITY' },
-                { id: 'M', suite: 'MENTALITY' },
-                { id: 'F', suite: 'FOCUS' },
-                { id: 'A', suite: 'AFFECT' },
-                { id: 'S', suite: 'SENSORY' },
-                { id: 'T', suite: 'TEMPORAL' }
+                { id: 'I', suit: 'IDENTITY' },
+                { id: 'M', suit: 'MENTALITY' },
+                { id: 'F', suit: 'FOCUS' },
+                { id: 'A', suit: 'AFFECT' },
+                { id: 'S', suit: 'SENSORY' },
+                { id: 'T', suit: 'TEMPORAL' }
             ],
 
             cards: [
                 // IDENTITY
-                {dim: 'I', val: 0.00, label: 'Dissolved', desc: 'No sense of separate self. Complete boundary loss. Unity with environment.'},
-                {dim: 'I', val: 0.17, label: 'Fragmented', desc: 'Weak self-boundaries. Feeling disconnected from own actions and thoughts.'},
-                {dim: 'I', val: 0.33, label: 'Diffuse', desc: 'Blurry self-concept. Uncertain who you are or what defines you.'},
-                {dim: 'I', val: 0.50, label: 'Baseline', desc: 'Normal everyday self-sense. Clear "I" without extreme features.'},
-                {dim: 'I', val: 0.67, label: 'Strong', desc: 'Solid sense of self. Clear personal boundaries and continuity.'},
-                {dim: 'I', val: 0.83, label: 'Sharp', desc: 'Very distinct self/other boundary. Strong agency and ownership.'},
-                {dim: 'I', val: 1.00, label: 'Crystalline', desc: 'Absolutely unified self. Crystal clear identity and full agency.'},
+                {dim: 'I', val: 0.00, label: 'Transcendent', desc: 'Self expanded beyond individual boundaries, unified with the whole.'},
+                {dim: 'I', val: 0.17, label: 'Disrupted', desc: 'Self sense is fragmented or depersonalized, lack of continuity.'},
+                {dim: 'I', val: 0.33, label: 'Social', desc: 'Self defined by relationships and social roles.'},
+                {dim: 'I', val: 0.50, label: 'Narrative', desc: 'Self as a coherent story over time.'},
+                {dim: 'I', val: 0.67, label: 'Extended', desc: 'Self includes tools, possessions, and environment.'},
+                {dim: 'I', val: 0.83, label: 'Minimal', desc: 'Basic pre-reflective self through bodily presence.'},
+                {dim: 'I', val: 1.00, label: 'Core', desc: 'Essential, unchanging sense of self.'},
 
                 // MENTALITY
                 {dim: 'M', val: 0.00, label: 'Blank', desc: 'Complete absence of thought. Empty mind without internal voice.'},
@@ -406,24 +400,7 @@
                 {dim: 'T', val: 1.00, label: 'Crystalline', desc: 'Perfect temporal certainty. Clarity of flow.'}
             ],
 
-            constraints: [
-                {
-                    check: (f) => f.I < 0.2 && f.T > 0.7,
-                    msg: "High temporal certainty requires coherent identity"
-                },
-                {
-                    check: (f) => f.M < 0.2 && f.F > 0.7,
-                    msg: "High focus requires mental content"
-                },
-                {
-                    check: (f) => f.A < -0.7 && f.T > 0.7,
-                    msg: "Extreme suffering rarely coexists with high temporal certainty"
-                },
-                {
-                    check: (f) => f.I < 0.2 && f.F > 0.8,
-                    msg: "Dissolved self unlikely to have pinpoint focus"
-                }
-            ]
+            constraints: []
         };
 
         class LudiEngine {
@@ -437,7 +414,6 @@
                 this.deck = [...LUDI_MODEL.cards].sort(() => Math.random() - 0.5);
                 this.hand = [];
                 for (let i = 0; i < 6; i++) this.drawCard();
-                document.getElementById('validation').style.display = 'none';
                 this.updateDisplay();
             }
 
@@ -461,46 +437,13 @@
                 return frame;
             }
 
-            checkCoherence() {
-                const dims = new Set(this.hand.map(c => c.dim));
-                if (dims.size < 6 || this.hand.length !== 6) return;
-
-                const frame = this.getFrame();
-                const violations = LUDI_MODEL.constraints
-                    .filter(c => c.check(frame))
-                    .map(c => c.msg);
-
-                const valDiv = document.getElementById('validation');
-                valDiv.style.display = 'block';
-
-                document.getElementById('validity-status').innerHTML = violations.length === 0
-                    ? '<span class="valid">✓ COHERENT FRAME</span>'
-                    : '<span class="invalid">⚠ CONSTRAINT VIOLATIONS</span>';
-
-                document.getElementById('constraints').innerHTML = violations.length === 0
-                    ? '<div class="constraint-item">This state is phenomenologically stable.</div>'
-                    : violations.map(v => `<div class="constraint-item violated">• ${v}</div>`).join('');
-
-                document.getElementById('vector').textContent = JSON.stringify(frame).replace(/"/g, '');
-            }
-
             autoWin() {
-                let attempts = 0;
-                while (attempts < 500) {
-                    const testHand = LUDI_MODEL.dimensions.map(d => {
-                        const choices = LUDI_MODEL.cards.filter(c => c.dim === d.id);
-                        return choices[Math.floor(Math.random() * choices.length)];
-                    });
-                    const frame = {};
-                    testHand.forEach(c => frame[c.dim] = c.val);
-                    if (!LUDI_MODEL.constraints.some(c => c.check(frame))) {
-                        this.hand = testHand;
-                        break;
-                    }
-                    attempts++;
-                }
+                const testHand = LUDI_MODEL.dimensions.map(d => {
+                    const choices = LUDI_MODEL.cards.filter(c => c.dim === d.id);
+                    return choices[Math.floor(Math.random() * choices.length)];
+                });
+                this.hand = testHand;
                 this.updateDisplay();
-                this.checkCoherence();
             }
 
             updateDisplay() {
@@ -511,7 +454,7 @@
                 this.hand.sort((a, b) => order.indexOf(a.dim) - order.indexOf(b.dim));
 
                 this.hand.forEach((card, idx) => {
-                    const suite = LUDI_MODEL.dimensions.find(d => d.id === card.dim).suite;
+                    const suit = LUDI_MODEL.dimensions.find(d => d.id === card.dim).suit;
                     const el = document.createElement('div');
                     el.className = 'card';
                     el.onclick = () => this.discardCard(idx);
@@ -521,7 +464,7 @@
 
                     el.innerHTML = `
                         <div class="card-header">
-                            <div class="card-suite">${suite}</div>
+                            <div class="card-suit">${suit}</div>
                             <div class="card-value">${card.val.toFixed(2)}</div>
                         </div>
                         <div class="card-label">${card.label}</div>
@@ -534,7 +477,6 @@
                 document.getElementById('hand-status').textContent = `Hand: ${this.hand.length}/6`;
                 document.getElementById('deck-status').textContent = `Deck: ${this.deck.length}`;
                 document.getElementById('draw-btn').disabled = this.hand.length >= 6;
-                document.getElementById('check-btn').disabled = this.hand.length !== 6;
             }
         }
 
@@ -548,7 +490,7 @@
                 row.className = 'survey-row';
                 row.innerHTML = `
                     <div class="survey-header">
-                        <span class="survey-label">${dim.suite}</span>
+                        <span class="survey-label">${dim.suit}</span>
                         <span class="survey-value-display" id="sv-${dim.id}">0.50</span>
                     </div>
                     <input type="range" class="survey-slider" id="sl-${dim.id}" min="0" max="6" value="3" oninput="syncSurvey('${dim.id}')">
@@ -577,7 +519,6 @@
             });
             hideSurvey();
             game.updateDisplay();
-            game.checkCoherence();
         }
 
         function showSurvey() { initSurvey(); document.getElementById('survey-modal').style.display = 'block'; }
