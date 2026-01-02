@@ -99,6 +99,12 @@
             position: relative;
         }
 
+        .card.missing {
+            opacity: 0.4;
+            border-style: dashed;
+            background: #fafafa;
+        }
+
         .card:hover {
             transform: translateY(-3px);
             box-shadow: 4px 4px 0 #000;
@@ -157,30 +163,6 @@
             background: #000;
         }
 
-        .validation {
-            background: #fff;
-            border: 3px solid #000;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .valid { color: #000; font-weight: bold; font-size: 1.3em; }
-        .invalid { color: #000; font-weight: bold; font-size: 1.3em; }
-
-        .constraint-list { margin-top: 12px; font-size: 0.85em; }
-        .constraint-item { margin: 6px 0; padding-left: 15px; color: #666; }
-        .constraint-item.violated { color: #000; font-weight: bold; }
-
-        .vector-display {
-            background: #f5f5f5;
-            border: 2px solid #ccc;
-            padding: 12px;
-            margin-top: 12px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.75em;
-            word-break: break-all;
-        }
-
         .modal {
             display: none;
             position: fixed;
@@ -201,17 +183,18 @@
         }
 
         .modal h2 { margin-bottom: 20px; font-size: 2em; text-decoration: underline; }
-        .modal h3 { margin-top: 30px; margin-bottom: 10px; font-size: 1.2em; color: #000; }
-        .modal p { margin-bottom: 15px; font-size: 0.95em; line-height: 1.6; }
-        .modal ul { margin-bottom: 20px; padding-left: 20px; }
-        .modal li { margin-bottom: 8px; font-size: 0.95em; }
 
+        /* Survey Styles */
         .survey-row {
             margin-bottom: 20px;
             padding: 15px;
-            border: 1px solid #eee;
-            border-radius: 4px;
+            border: 1px solid #000;
             background: #fff;
+        }
+
+        .survey-row.inactive {
+            opacity: 0.4;
+            background: #f0f0f0;
         }
 
         .survey-header {
@@ -221,12 +204,61 @@
             margin-bottom: 12px;
         }
 
+        .survey-toggle-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
         .survey-label { font-weight: bold; font-size: 0.9em; text-transform: uppercase; }
         .survey-value-display { font-family: 'Courier New', monospace; background: #000; color: #fff; padding: 2px 8px; font-size: 0.85em; }
         .survey-slider { width: 100%; height: 12px; accent-color: #000; cursor: pointer; }
         .survey-info { margin-top: 12px; background: #f9f9f9; padding: 12px; border-left: 3px solid #000; }
         .survey-info b { display: block; margin-bottom: 4px; text-transform: uppercase; }
         .survey-info p { margin: 0; font-size: 0.85em; color: #444; }
+
+        /* Save System UI */
+        .save-system {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 4px double #000;
+        }
+
+        .save-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .save-input {
+            flex-grow: 1;
+            border: 2px solid #000;
+            padding: 8px;
+            font-family: inherit;
+        }
+
+        .saved-states-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .state-chip {
+            border: 1px solid #000;
+            padding: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85em;
+            background: #f9f9f9;
+        }
+
+        .state-chip:hover { background: #eee; }
+
+        .chip-actions { display: flex; gap: 5px; }
+        .btn-mini { padding: 2px 6px; font-size: 0.7em; }
 
         @media (max-width: 600px) {
             .hand { grid-template-columns: repeat(2, 1fr); }
@@ -243,7 +275,7 @@
         <div class="controls">
             <button onclick="game.drawCard()" id="draw-btn">DRAW CARD</button>
             <button onclick="game.autoWin()" id="win-btn">AUTO-WIN</button>
-            <button onclick="showSurvey()">SURVEY</button>
+            <button onclick="showSurvey()">SURVEY / STATES</button>
             <button onclick="game.newGame()">NEW GAME</button>
             <button onclick="showAbout()">ABOUT</button>
         </div>
@@ -255,73 +287,36 @@
         </div>
 
         <div id="hand" class="hand"></div>
-
     </div>
 
-    <!-- About Modal with Updated Content -->
+    <!-- About Modal -->
     <div id="about-modal" class="modal">
         <div class="modal-content">
             <h2>SOURCERER LUDI</h2>
-            <p>Sourcerer Ludi is simultaneously:</p>
-            <ul>
-                <li><strong>A playable card game:</strong> Draw/discard to build valid experiential frames, with survey and auto-complete mechanics.</li>
-                <li><strong>A working phenomenological model:</strong> Six dimensions actually specify experiential states; frames can be tested for coherence.</li>
-                <li><strong>An educational demonstration of EE principles:</strong> Shows that experience is complete without external reality (the Magic Window made concrete).</li>
-                <li><strong>Foundation for Game Theory 2.0:</strong> Enables precise modeling of experiential states for any agent (Nash's players, fictional characters, organisms) without ontological commitment.</li>
-            </ul>
-
-            <p>It's a game that <em>is</em> the model. Not teaching about the model: the gameplay mechanics ARE phenomenological measurement. Like how chess teaches strategy by being strategy, not by explaining it.</p>
-
-            <p>The physical deck makes it shareable (play with anyone). The digital version makes it extensible (survey, frame extraction, sequence modeling). The theoretical grounding makes it rigorous (falsifiable constraints, measurable dimensions).</p>
-
-            <p><strong>A Trojan horse:</strong> looks like a simple card game, functions as consciousness cartography, demonstrates that externalism is unnecessary.</p>
-
-            <h3>EXPERIENTIAL EMPIRICISM (EE)</h3>
-            <p>All evidence is present experience. Time as well as space and matter are all patterns within experience, attributes of the present experiential moment. You cannot use experience to prove something outside it: that’s circular, assuming the conclusion. Experience and logic are ALL that survive burden of proof.</p>
-
-            <p>Where appropriate I call this new field Sourcery, as EE provides access to the shared ground under philosophy and science by dissolving the subject/object divide.</p>
-
-            <p>This is the polar opposite of eliminative materialism. Instead of absurdly saying my experiences don’t exist, which is axiomatically false since I’m having one while saying it, I simply stick with only that which is self-proving: <strong>Experience and logic.</strong></p>
-
-            <h3>THE MAGIC WINDOW</h3>
-            <p>The Magic Window is a thought experiment demonstrating that the problem of "external reality" is logical, not sensory. Imagine a device that bypasses all sensory organs and inserts perfect, direct knowledge of mind-independent material reality into your consciousness. Even in this scenario, your verification of that reality remains an experiential event. You are still looking at patterns within consciousness.</p>
-
-            <p>This reveals that no possible operation can verify a non-experiential cause without that verification being experiential itself. Accessing "external reality" would only ever provide more experiential patterns, making the materialist interpretation an explanatorily idle story added onto the patterns we already have.</p>
-
-            <p>Why posit a metaphysical external that does no work beyond adding confusion? Patterns of experience alone are exhaustively sufficient. We don’t also need stories about the patterns. People keep assuming events sit in a container (space, time, thought, god, simulation), despite all evidence of the container being more present self-contained experience. Formally make experience the axiom, skip the middle men, and watch the problems vanish.</p>
-
-            <h3>THE AXOMATIC FRAMEWORK</h3>
-            <p>EE applies burden of proof ruthlessly. This eliminates materialism, external time, and spatial externality as unjustified assumptions. What remains are two self-proving axioms:</p>
-            <ul>
-                <li><strong>Experience exists:</strong> proven by occurring.</li>
-                <li><strong>Logic works:</strong> proven by use.</li>
-            </ul>
-
-            <p>Physical laws describe experiential regularities, not hidden substances. Problems like consciousness, quantum measurement, and free will dissolve as artifacts of the discarded externalist assumption. Science requires no methodological changes because it was always mapping experiential patterns.</p>
-
-            <h3>THE SELF-CONTAINED VIEW</h3>
-            <ul>
-                <li><strong>Metaphysics:</strong> Only experiential moments, with time and space as structural features within them.</li>
-                <li><strong>Epistemology:</strong> Justified by occurrence (experience) and coherence (logic-in-use).</li>
-                <li><strong>Ethics:</strong> Managed by navigating and shaping valence patterns.</li>
-                <li><strong>Science:</strong> Describes stable, recurrent experiential correlations.</li>
-            </ul>
-
-            <p>Regularity is just what’s given. Positing an unseen cause for it is both circular and superfluous. I limit my system to the fewest number of axioms possible for the same reason I respect burden of proof and parsimony.</p>
-
-            <p>The only remaining problem is proving other minds feel things, which cannot be done, but that is operationally irrelevant because clearly they exist as sources of experience patterns. I choose not to be cruel. That’s the logical and phenomenological ground zero of any possible epistemology.</p>
-
-            <p>To reject it is to step outside the possibility of having a view at all.</p>
-
+            <p>Sourcerer Ludi is a phenomenological modeling tool disguised as a card game.</p>
+            <p><strong>EE Principles:</strong> Experience and logic are the only self-proving axioms. This game allows you to map experiential frames by defining attributes across six core dimensions.</p>
             <button onclick="hideAbout()" style="width:100%; margin-top:20px; padding: 15px; font-size: 1.1em; background: #000; color: #fff;">RETURN TO GAME</button>
         </div>
     </div>
 
+    <!-- Survey Modal -->
     <div id="survey-modal" class="modal">
         <div class="modal-content">
             <h2>PHENOMENOLOGICAL SURVEY</h2>
+            <p style="font-size: 0.8em; margin-bottom: 20px; color: #666;">Use the toggle to represent "Inattention" (missing attributes).</p>
+            
             <div id="survey-rows-container"></div>
-            <div style="display: flex; gap: 10px; margin-top: 30px;">
+
+            <div class="save-system">
+                <h3>SAVED STATES</h3>
+                <div class="save-controls">
+                    <input type="text" id="state-name-input" class="save-input" placeholder="Name this experiential state...">
+                    <button onclick="saveCurrentState()">SAVE STATE</button>
+                </div>
+                <div id="saved-states-list" class="saved-states-list"></div>
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-top: 30px; border-top: 2px solid #000; padding-top: 20px;">
                 <button onclick="applySurvey()" style="flex: 2; background: #000; color: #fff;">APPLY TO FRAME</button>
                 <button onclick="hideSurvey()" style="flex: 1;">CANCEL</button>
             </div>
@@ -329,11 +324,6 @@
     </div>
 
     <script>
-        /** * ==========================================
-         * PHENOMENOLOGICAL DATA (The "Words")
-         * Edit this section to refine the model.
-         * ==========================================
-         */
         const LUDI_MODEL = {
             dimensions: [
                 { id: 'I', suit: 'IDENTITY' },
@@ -343,64 +333,55 @@
                 { id: 'S', suit: 'SENSORY' },
                 { id: 'T', suit: 'TEMPORAL' }
             ],
-
             cards: [
-                // IDENTITY
-                {dim: 'I', val: 0.00, label: 'Transcendent', desc: 'Self expanded beyond individual boundaries, unified with the whole.'},
-                {dim: 'I', val: 0.17, label: 'Disrupted', desc: 'Self sense is fragmented or depersonalized, lack of continuity.'},
-                {dim: 'I', val: 0.33, label: 'Social', desc: 'Self defined by relationships and social roles.'},
+                {dim: 'I', val: 0.00, label: 'Transcendent', desc: 'Self expanded beyond individual boundaries.'},
+                {dim: 'I', val: 0.17, label: 'Disrupted', desc: 'Self sense is fragmented or depersonalized.'},
+                {dim: 'I', val: 0.33, label: 'Social', desc: 'Self defined by relationships and roles.'},
                 {dim: 'I', val: 0.50, label: 'Narrative', desc: 'Self as a coherent story over time.'},
-                {dim: 'I', val: 0.67, label: 'Extended', desc: 'Self includes tools, possessions, and environment.'},
-                {dim: 'I', val: 0.83, label: 'Minimal', desc: 'Basic pre-reflective self through bodily presence.'},
+                {dim: 'I', val: 0.67, label: 'Extended', desc: 'Self includes tools and environment.'},
+                {dim: 'I', val: 0.83, label: 'Minimal', desc: 'Basic pre-reflective bodily presence.'},
                 {dim: 'I', val: 1.00, label: 'Core', desc: 'Essential, unchanging sense of self.'},
 
-                // MENTALITY
-                {dim: 'M', val: 0.00, label: 'Blank', desc: 'Complete absence of thought. Empty mind without internal voice.'},
-                {dim: 'M', val: 0.17, label: 'Dimmed', desc: 'Barely conscious thinking. Thoughts barely register before fading.'},
-                {dim: 'M', val: 0.33, label: 'Foggy', desc: 'Clouded cognition. Difficulty forming or holding coherent thoughts.'},
-                {dim: 'M', val: 0.50, label: 'Baseline', desc: 'Normal thinking clarity. Standard cognitive processing speed.'},
-                {dim: 'M', val: 0.67, label: 'Clear', desc: 'Sharp thinking. Ideas flow smoothly with good coherence.'},
-                {dim: 'M', val: 0.83, label: 'Brilliant', desc: 'Exceptionally clear cognition. Rapid, precise thought processing.'},
-                {dim: 'M', val: 1.00, label: 'Hyperlucid', desc: 'Overwhelming mental clarity. Every thought crystalline and vivid.'},
+                {dim: 'M', val: 0.00, label: 'Blank', desc: 'Complete absence of thought.'},
+                {dim: 'M', val: 0.17, label: 'Dimmed', desc: 'Barely conscious thinking.'},
+                {dim: 'M', val: 0.33, label: 'Foggy', desc: 'Clouded cognition.'},
+                {dim: 'M', val: 0.50, label: 'Baseline', desc: 'Normal thinking clarity.'},
+                {dim: 'M', val: 0.67, label: 'Clear', desc: 'Sharp thinking, smooth flow.'},
+                {dim: 'M', val: 0.83, label: 'Brilliant', desc: 'Rapid, precise thought processing.'},
+                {dim: 'M', val: 1.00, label: 'Hyperlucid', desc: 'Every thought crystalline and vivid.'},
 
-                // FOCUS
-                {dim: 'F', val: 0.00, label: 'Scattered', desc: 'Complete distraction. Attention pulled everywhere at once.'},
-                {dim: 'F', val: 0.17, label: 'Drifting', desc: 'Weak attention control. Thoughts wander constantly and easily.'},
-                {dim: 'F', val: 0.33, label: 'Restless', desc: 'Difficulty concentrating. Attention shifts frequently.'},
-                {dim: 'F', val: 0.50, label: 'Baseline', desc: 'Normal attention. Can focus when needed, naturally shifts.'},
-                {dim: 'F', val: 0.67, label: 'Engaged', desc: 'Good concentration. Can hold attention steadily on tasks.'},
-                {dim: 'F', val: 0.83, label: 'Locked', desc: 'Deep focus. Strong resistance to distraction and drift.'},
-                {dim: 'F', val: 1.00, label: 'Absorbed', desc: 'Total immersion. Complete capture by single point of attention.'},
+                {dim: 'F', val: 0.00, label: 'Scattered', desc: 'Complete distraction.'},
+                {dim: 'F', val: 0.17, label: 'Drifting', desc: 'Weak attention control.'},
+                {dim: 'F', val: 0.33, label: 'Restless', desc: 'Difficulty concentrating.'},
+                {dim: 'F', val: 0.50, label: 'Baseline', desc: 'Normal attention focus.'},
+                {dim: 'F', val: 0.67, label: 'Engaged', desc: 'Good concentration on tasks.'},
+                {dim: 'F', val: 0.83, label: 'Locked', desc: 'Strong resistance to distraction.'},
+                {dim: 'F', val: 1.00, label: 'Absorbed', desc: 'Total capture by a single point.'},
 
-                // AFFECT
-                {dim: 'A', val: -1.00, label: 'Anguish', desc: 'Intense suffering. Overwhelming negative experience dominates.'},
-                {dim: 'A', val: -0.67, label: 'Distressed', desc: 'Strong negative tone. Clear suffering colors experience.'},
-                {dim: 'A', val: -0.33, label: 'Uneasy', desc: 'Mild discomfort. Slightly negative valence, noticeable.'},
-                {dim: 'A', val: 0.00, label: 'Neutral', desc: 'Flat emotional tone. Neither pleasant nor unpleasant.'},
-                {dim: 'A', val: 0.33, label: 'Pleasant', desc: 'Mild positive feeling. Subtle sense of okayness.'},
-                {dim: 'A', val: 0.67, label: 'Joyful', desc: 'Strong positive tone. Clear sense of wellbeing.'},
-                {dim: 'A', val: 1.00, label: 'Blissful', desc: 'Intense flourishing. Overwhelming positive experience.'},
+                {dim: 'A', val: -1.00, label: 'Anguish', desc: 'Intense suffering dominates.'},
+                {dim: 'A', val: -0.67, label: 'Distressed', desc: 'Strong negative tone.'},
+                {dim: 'A', val: -0.33, label: 'Uneasy', desc: 'Mild discomfort or negative valence.'},
+                {dim: 'A', val: 0.00, label: 'Neutral', desc: 'Neither pleasant nor unpleasant.'},
+                {dim: 'A', val: 0.33, label: 'Pleasant', desc: 'Mild positive feeling.'},
+                {dim: 'A', val: 0.67, label: 'Joyful', desc: 'Strong positive tone and wellbeing.'},
+                {dim: 'A', val: 1.00, label: 'Blissful', desc: 'Intense flourishing.'},
 
-                // SENSORY
-                {dim: 'S', val: 0.00, label: 'Numb', desc: 'Complete sensory muting. World feels distant.'},
-                {dim: 'S', val: 0.17, label: 'Muted', desc: 'Very dull perception. Senses feel dampened.'},
-                {dim: 'S', val: 0.33, label: 'Dim', desc: 'Low sensory intensity. Perception lacks richness.'},
-                {dim: 'S', val: 0.50, label: 'Baseline', desc: 'Normal perception. Standard sensory vividness.'},
-                {dim: 'S', val: 0.67, label: 'Vivid', desc: 'Enhanced perception. Details appear richer.'},
-                {dim: 'S', val: 0.83, label: 'Heightened', desc: 'Very intense senses. World feels unusually real.'},
-                {dim: 'S', val: 1.00, label: 'Hyperreal', desc: 'Everything impossibly vivid and detailed.'},
+                {dim: 'S', val: 0.00, label: 'Numb', desc: 'Complete sensory muting.'},
+                {dim: 'S', val: 0.17, label: 'Muted', desc: 'Very dull perception.'},
+                {dim: 'S', val: 0.33, label: 'Dim', desc: 'Low sensory intensity.'},
+                {dim: 'S', val: 0.50, label: 'Baseline', desc: 'Normal perception.'},
+                {dim: 'S', val: 0.67, label: 'Vivid', desc: 'Enhanced perception.'},
+                {dim: 'S', val: 0.83, label: 'Heightened', desc: 'World feels unusually real.'},
+                {dim: 'S', val: 1.00, label: 'Hyperreal', desc: 'Everything impossibly vivid.'},
 
-                // TEMPORAL
-                {dim: 'T', val: 0.00, label: 'Timeless', desc: 'No time-sense. Loss of duration awareness.'},
-                {dim: 'T', val: 0.17, label: 'Confused', desc: 'Weak time-sense. Uncertain how long anything lasts.'},
-                {dim: 'T', val: 0.33, label: 'Hazy', desc: 'Unclear duration sense. Poor temporal precision.'},
-                {dim: 'T', val: 0.50, label: 'Baseline', desc: 'Normal time-sense. Standard flow awareness.'},
-                {dim: 'T', val: 0.67, label: 'Clear', desc: 'Good temporal awareness. Confident estimates.'},
-                {dim: 'T', val: 0.83, label: 'Sharp', desc: 'Precise time-sense. Absolute confidence.'},
-                {dim: 'T', val: 1.00, label: 'Crystalline', desc: 'Perfect temporal certainty. Clarity of flow.'}
-            ],
-
-            constraints: []
+                {dim: 'T', val: 0.00, label: 'Timeless', desc: 'No time-sense or duration awareness.'},
+                {dim: 'T', val: 0.17, label: 'Confused', desc: 'Weak and uncertain time-sense.'},
+                {dim: 'T', val: 0.33, label: 'Hazy', desc: 'Unclear duration sense.'},
+                {dim: 'T', val: 0.50, label: 'Baseline', desc: 'Normal time-flow awareness.'},
+                {dim: 'T', val: 0.67, label: 'Clear', desc: 'Good temporal awareness.'},
+                {dim: 'T', val: 0.83, label: 'Sharp', desc: 'Precise time-sense.'},
+                {dim: 'T', val: 1.00, label: 'Crystalline', desc: 'Perfect temporal certainty.'}
+            ]
         };
 
         class LudiEngine {
@@ -409,14 +390,12 @@
                 this.deck = [];
                 this.newGame();
             }
-
             newGame() {
                 this.deck = [...LUDI_MODEL.cards].sort(() => Math.random() - 0.5);
                 this.hand = [];
                 for (let i = 0; i < 6; i++) this.drawCard();
                 this.updateDisplay();
             }
-
             drawCard() {
                 if (this.hand.length >= 6) return;
                 if (this.deck.length === 0) {
@@ -425,55 +404,46 @@
                 this.hand.push(this.deck.pop());
                 this.updateDisplay();
             }
-
             discardCard(index) {
                 this.hand.splice(index, 1);
                 this.updateDisplay();
             }
-
-            getFrame() {
-                const frame = {};
-                this.hand.forEach(c => frame[c.dim] = c.val);
-                return frame;
-            }
-
             autoWin() {
-                const testHand = LUDI_MODEL.dimensions.map(d => {
+                this.hand = LUDI_MODEL.dimensions.map(d => {
                     const choices = LUDI_MODEL.cards.filter(c => c.dim === d.id);
-                    return choices[Math.floor(Math.random() * choices.length)];
+                    return {...choices[Math.floor(Math.random() * choices.length)], missing: false};
                 });
-                this.hand = testHand;
                 this.updateDisplay();
             }
-
             updateDisplay() {
                 const handDiv = document.getElementById('hand');
                 handDiv.innerHTML = '';
-
                 const order = LUDI_MODEL.dimensions.map(d => d.id);
                 this.hand.sort((a, b) => order.indexOf(a.dim) - order.indexOf(b.dim));
 
                 this.hand.forEach((card, idx) => {
                     const suit = LUDI_MODEL.dimensions.find(d => d.id === card.dim).suit;
                     const el = document.createElement('div');
-                    el.className = 'card';
+                    el.className = `card ${card.missing ? 'missing' : ''}`;
                     el.onclick = () => this.discardCard(idx);
-
-                    const valMap = LUDI_MODEL.cards.filter(c => c.dim === card.dim).map(c => c.val);
-                    const dots = valMap.map(v => `<div class="pos-dot ${v === card.val ? 'active' : ''}"></div>`).join('');
-
-                    el.innerHTML = `
-                        <div class="card-header">
-                            <div class="card-suit">${suit}</div>
-                            <div class="card-value">${card.val.toFixed(2)}</div>
-                        </div>
-                        <div class="card-label">${card.label}</div>
-                        <div class="card-desc">${card.desc}</div>
-                        <div class="card-position">${dots}</div>
-                    `;
+                    
+                    if (card.missing) {
+                        el.innerHTML = `<div class="card-suit">${suit}</div><div style="margin-top:auto; font-size:0.8em; font-weight:bold; color:#999;">[ UNATTENDED ]</div>`;
+                    } else {
+                        const valMap = LUDI_MODEL.cards.filter(c => c.dim === card.dim).map(c => c.val);
+                        const dots = valMap.map(v => `<div class="pos-dot ${v === card.val ? 'active' : ''}"></div>`).join('');
+                        el.innerHTML = `
+                            <div class="card-header">
+                                <div class="card-suit">${suit}</div>
+                                <div class="card-value">${card.val.toFixed(2)}</div>
+                            </div>
+                            <div class="card-label">${card.label}</div>
+                            <div class="card-desc">${card.desc}</div>
+                            <div class="card-position">${dots}</div>
+                        `;
+                    }
                     handDiv.appendChild(el);
                 });
-
                 document.getElementById('hand-status').textContent = `Hand: ${this.hand.length}/6`;
                 document.getElementById('deck-status').textContent = `Deck: ${this.deck.length}`;
                 document.getElementById('draw-btn').disabled = this.hand.length >= 6;
@@ -482,31 +452,60 @@
 
         const game = new LudiEngine();
 
+        // SURVEY & SAVE SYSTEM
+        let savedStates = JSON.parse(localStorage.getItem('ludi_states')) || {};
+
         function initSurvey() {
             const container = document.getElementById('survey-rows-container');
             container.innerHTML = '';
             LUDI_MODEL.dimensions.forEach(dim => {
                 const row = document.createElement('div');
                 row.className = 'survey-row';
+                row.id = `row-${dim.id}`;
                 row.innerHTML = `
                     <div class="survey-header">
                         <span class="survey-label">${dim.suit}</span>
-                        <span class="survey-value-display" id="sv-${dim.id}">0.50</span>
+                        <div class="survey-toggle-box">
+                            <input type="checkbox" checked id="tg-${dim.id}" onchange="toggleDim('${dim.id}')">
+                            <label for="tg-${dim.id}">ATTENDING</label>
+                            <span class="survey-value-display" id="sv-${dim.id}">0.50</span>
+                        </div>
                     </div>
-                    <input type="range" class="survey-slider" id="sl-${dim.id}" min="0" max="6" value="3" oninput="syncSurvey('${dim.id}')">
-                    <div class="survey-info">
-                        <b id="sl-lbl-${dim.id}">Baseline</b>
-                        <p id="sl-dsc-${dim.id}">Loading...</p>
+                    <div id="sl-ctrl-${dim.id}">
+                        <input type="range" class="survey-slider" id="sl-${dim.id}" min="0" max="6" value="3" oninput="syncSurvey('${dim.id}')">
+                        <div class="survey-info">
+                            <b id="sl-lbl-${dim.id}">Baseline</b>
+                            <p id="sl-dsc-${dim.id}">Loading...</p>
+                        </div>
                     </div>
                 `;
                 container.appendChild(row);
                 syncSurvey(dim.id);
             });
+            renderSavedStates();
+        }
+
+        function toggleDim(dimId) {
+            const active = document.getElementById(`tg-${dimId}`).checked;
+            const row = document.getElementById(`row-${dimId}`);
+            const ctrl = document.getElementById(`sl-ctrl-${dimId}`);
+            const valDisplay = document.getElementById(`sv-${dimId}`);
+            
+            if (active) {
+                row.classList.remove('inactive');
+                ctrl.style.display = 'block';
+                valDisplay.style.visibility = 'visible';
+            } else {
+                row.classList.add('inactive');
+                ctrl.style.display = 'none';
+                valDisplay.style.visibility = 'hidden';
+            }
         }
 
         function syncSurvey(dimId) {
             const idx = document.getElementById(`sl-${dimId}`).value;
-            const card = LUDI_MODEL.cards.filter(c => c.dim === dimId)[idx];
+            const dimCards = LUDI_MODEL.cards.filter(c => c.dim === dimId);
+            const card = dimCards[idx];
             document.getElementById(`sv-${dimId}`).textContent = card.val.toFixed(2);
             document.getElementById(`sl-lbl-${dimId}`).textContent = card.label;
             document.getElementById(`sl-dsc-${dimId}`).textContent = card.desc;
@@ -514,11 +513,65 @@
 
         function applySurvey() {
             game.hand = LUDI_MODEL.dimensions.map(dim => {
+                const attending = document.getElementById(`tg-${dim.id}`).checked;
                 const idx = document.getElementById(`sl-${dim.id}`).value;
-                return LUDI_MODEL.cards.filter(c => c.dim === dim.id)[idx];
+                const card = LUDI_MODEL.cards.filter(c => c.dim === dim.id)[idx];
+                return { ...card, missing: !attending };
             });
             hideSurvey();
             game.updateDisplay();
+        }
+
+        // STATE PERSISTENCE logic
+        function saveCurrentState() {
+            const name = document.getElementById('state-name-input').value.trim();
+            if (!name) return;
+            
+            const state = LUDI_MODEL.dimensions.map(dim => ({
+                id: dim.id,
+                valIndex: document.getElementById(`sl-${dim.id}`).value,
+                attending: document.getElementById(`tg-${dim.id}`).checked
+            }));
+
+            savedStates[name] = state;
+            localStorage.setItem('ludi_states', JSON.stringify(savedStates));
+            document.getElementById('state-name-input').value = '';
+            renderSavedStates();
+        }
+
+        function loadState(name) {
+            const state = savedStates[name];
+            state.forEach(s => {
+                const sl = document.getElementById(`sl-${s.id}`);
+                const tg = document.getElementById(`tg-${s.id}`);
+                if (sl) sl.value = s.valIndex;
+                if (tg) tg.checked = s.attending;
+                toggleDim(s.id);
+                syncSurvey(s.id);
+            });
+        }
+
+        function deleteState(name) {
+            delete savedStates[name];
+            localStorage.setItem('ludi_states', JSON.stringify(savedStates));
+            renderSavedStates();
+        }
+
+        function renderSavedStates() {
+            const list = document.getElementById('saved-states-list');
+            list.innerHTML = '';
+            Object.keys(savedStates).forEach(name => {
+                const chip = document.createElement('div');
+                chip.className = 'state-chip';
+                chip.innerHTML = `
+                    <span>${name}</span>
+                    <div class="chip-actions">
+                        <button class="btn-mini" onclick="loadState('${name}')">LOAD</button>
+                        <button class="btn-mini" onclick="deleteState('${name}')">X</button>
+                    </div>
+                `;
+                list.appendChild(chip);
+            });
         }
 
         function showSurvey() { initSurvey(); document.getElementById('survey-modal').style.display = 'block'; }
