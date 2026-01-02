@@ -218,11 +218,11 @@
             border-top: 1px dashed #ccc;
         }
 
-        .pos-dot { 
-            width: 14px; 
-            height: 14px; 
-            background: #fff; 
-            border: 2px solid #000; 
+        .pos-dot {
+            width: 14px;
+            height: 14px;
+            background: #fff;
+            border: 2px solid #000;
             border-radius: 2px;
             cursor: pointer;
             transition: background 0.2s;
@@ -243,7 +243,7 @@
             background: rgba(255,255,255,0.95); padding: 30px; overflow-y: auto; z-index: 1000;
         }
         .modal-content { max-width: 900px; margin: 0 auto; background: #fff; padding: 40px; border: 8px solid #000; }
-        
+
         .stack-select-item {
             padding: 10px;
             border: 2px solid #000;
@@ -255,7 +255,7 @@
         }
         .stack-select-item:hover { background: #000; color: #fff; }
 
-        /* Survey Styles */
+        /* Survey & About Styles */
         .survey-grid {
             display: flex;
             flex-direction: column;
@@ -296,6 +296,17 @@
         .survey-option.active { background: #000; color: #fff; border-color: #000; }
         .survey-option-label { font-weight: 900; text-transform: uppercase; font-size: 1em; }
         .survey-option-desc { font-size: 0.8em; opacity: 0.8; }
+
+        .about-text h3 { 
+            margin-top: 25px; 
+            margin-bottom: 10px; 
+            border-bottom: 2px solid #000; 
+            display: inline-block; 
+        }
+        .about-text p { margin-bottom: 15px; font-size: 0.95em; }
+        .about-text ul { margin-bottom: 15px; padding-left: 20px; list-style: square; }
+        .about-text li { margin-bottom: 8px; }
+        .about-text a { color: #000; font-weight: 900; text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -320,6 +331,7 @@
             </div>
             <button onclick="game.autoWin()">COHERE</button>
             <button onclick="showSurveyModal()">SURVEY</button>
+            <button onclick="showAboutModal()">ABOUT</button>
             <button onclick="game.newGame()">RESET</button>
         </div>
 
@@ -330,7 +342,6 @@
         <div id="hand" class="hand"></div>
     </div>
 
-    <!-- Stack Modal -->
     <div id="stack-modal" class="modal">
         <div class="modal-content">
             <h2>STACK WITH...</h2>
@@ -339,7 +350,6 @@
         </div>
     </div>
 
-    <!-- Survey Modal -->
     <div id="survey-modal" class="modal">
         <div class="modal-content">
             <h2>OBSERVATION SURVEY</h2>
@@ -349,6 +359,45 @@
                 <button onclick="game.commitSurvey()" style="flex: 2; background: #000; color: #fff;">COMMIT STATE</button>
                 <button onclick="hideSurveyModal()" style="flex: 1;">CANCEL</button>
             </div>
+        </div>
+    </div>
+
+    <div id="about-modal" class="modal">
+        <div class="modal-content about-text">
+            <h3>EXPERIENTIAL EMPIRICISM (EE)</h3>
+            <p>All evidence is present experience. Time as well as space and matter are all patterns within experience, attributes of the present experiential moment. You cannot use experience to prove something outside it: that’s circular, assuming the conclusion. Experience and logic are ALL that survive burden of proof.</p>
+            <p>Where appropriate I call this new field Sourcery, as EE provides access to the shared ground under philosophy and science by dissolving the subject/object divide.</p>
+            <p>This is the polar opposite of eliminative materialism. Instead of absurdly saying my experiences don’t exist, which is axiomatically false since I’m having one while saying it, I simply stick with only that which is self-proving: <strong>Experience and logic.</strong></p>
+
+            <h3>THE MAGIC WINDOW</h3>
+            <p>The Magic Window is a thought experiment demonstrating that the problem of "external reality" is logical, not sensory. Imagine a device that bypasses all sensory organs and inserts perfect, direct knowledge of mind-independent material reality into your consciousness. Even in this scenario, your verification of that reality remains an experiential event. You are still looking at patterns within consciousness.</p>
+            <p>This reveals that no possible operation can verify a non-experiential cause without that verification being experiential itself. Accessing "external reality" would only ever provide more experiential patterns, making the materialist interpretation an explanatorily idle story added onto the patterns we already have.</p>
+            <p>Why posit a metaphysical external that does no work beyond adding confusion? Patterns of experience alone are exhaustively sufficient. We don’t also need stories about the patterns. People keep assuming events sit in a container (space, time, thought, god, simulation), despite all evidence of the container being more present self-contained experience. Formally make experience the axiom, skip the middle men, and watch the problems vanish.</p>
+
+            <h3>THE AXOMATIC FRAMEWORK</h3>
+            <p>EE applies burden of proof ruthlessly. This eliminates materialism, external time, and spatial externality as unjustified assumptions. What remains are two self-proving axioms:</p>
+            <ul>
+                <li><strong>Experience exists:</strong> proven by occurring.</li>
+                <li><strong>Logic works:</strong> proven by use.</li>
+            </ul>
+            <p>Physical laws describe experiential regularities, not hidden substances. Problems like consciousness, quantum measurement, and free will dissolve as artifacts of the discarded externalist assumption. Science requires no methodological changes because it was always mapping experiential patterns.</p>
+
+            <h3>THE SELF-CONTAINED VIEW</h3>
+            <ul>
+                <li><strong>Metaphysics:</strong> Only experiential moments, with time and space as structural features within them.</li>
+                <li><strong>Epistemology:</strong> Justified by occurrence (experience) and coherence (logic-in-use).</li>
+                <li><strong>Ethics:</strong> Managed by navigating and shaping valence patterns.</li>
+                <li><strong>Science:</strong> Describes stable, recurrent experiential correlations.</li>
+            </ul>
+            <p>Regularity is just what’s given. Positing an unseen cause for it is both circular and superfluous. I limit my system to the fewest number of axioms possible for the same reason I respect burden of proof and parsimony.</p>
+            <p>The only remaining problem is proving other minds feel things, which cannot be done, but that is operationally irrelevant because clearly they exist as sources of experience patterns. I choose not to be cruel. That’s the logical and phenomenological ground zero of any possible epistemology.</p>
+            <p>To reject it is to step outside the possibility of having a view at all.</p>
+            
+            <p style="margin-top:20px; font-size: 0.8em; border-top: 1px dashed #000; padding-top:10px;">
+                Based on the work more fully explored here: <a href="https://philpeople.org/profiles/brandon-sergent/publications" target="_blank">Brandon Sergent Publications</a>
+            </p>
+            
+            <button onclick="hideAboutModal()" style="width:100%; margin-top:20px; background: #000; color: #fff;">CLOSE</button>
         </div>
     </div>
 
@@ -406,7 +455,7 @@
                 this.deck = [];
                 this.selectedIndex = null;
                 this.savedStates = JSON.parse(localStorage.getItem('ludi_v1_states') || '{}');
-                this.surveyChoices = {}; // dimId -> val
+                this.surveyChoices = {}; 
                 this.newGame();
             }
 
@@ -422,7 +471,7 @@
                 if (this.deck.length === 0) {
                     this.deck = [...LUDI_MODEL.cards].sort(() => Math.random() - 0.5);
                 }
-                
+
                 const revealChecked = document.getElementById('reveal-draw')?.checked;
                 const isFlipped = !revealChecked;
 
@@ -457,10 +506,10 @@
                 this.hand = LUDI_MODEL.dimensions.map(d => {
                     const choices = LUDI_MODEL.cards.filter(c => c.dim === d.id);
                     return {
-                        ...choices[Math.floor(Math.random() * choices.length)], 
+                        ...choices[Math.floor(Math.random() * choices.length)],
                         instanceId: Math.random().toString(36).substr(2, 9),
-                        rotation: 0, 
-                        isFlipped: isFlipped, 
+                        rotation: 0,
+                        isFlipped: isFlipped,
                         stackedWith: null
                     };
                 });
@@ -471,15 +520,13 @@
                 const finalCards = [];
                 for (const dim of LUDI_MODEL.dimensions) {
                     const val = this.surveyChoices[dim.id];
-                    
+
                     let template;
                     let isFlipped = false;
 
                     if (val !== undefined) {
-                        // User chose a state
                         template = LUDI_MODEL.cards.find(c => c.dim === dim.id && c.val === val);
                     } else {
-                        // Unanswered: pick random and hide
                         const options = LUDI_MODEL.cards.filter(c => c.dim === dim.id);
                         template = options[Math.floor(Math.random() * options.length)];
                         isFlipped = true;
@@ -501,10 +548,10 @@
             saveState() {
                 const name = document.getElementById('state-name').value.trim();
                 if (!name) return;
-                const state = this.hand.map(c => ({ 
-                    dim: c.dim, 
-                    val: c.val, 
-                    isFlipped: c.isFlipped, 
+                const state = this.hand.map(c => ({
+                    dim: c.dim,
+                    val: c.val,
+                    isFlipped: c.isFlipped,
                     stackedWith: c.stackedWith,
                     rotation: c.rotation
                 }));
@@ -555,12 +602,12 @@
             updateDisplay() {
                 const handDiv = document.getElementById('hand');
                 handDiv.innerHTML = '';
-                
+
                 this.hand.forEach((card, idx) => {
                     const dimInfo = LUDI_MODEL.dimensions.find(d => d.id === card.dim);
                     const container = document.createElement('div');
                     container.className = 'card-container';
-                    
+
                     if (card.stackedWith) {
                         container.style.marginLeft = "-160px";
                         container.style.marginTop = "40px";
@@ -574,7 +621,7 @@
 
                     const allStatesInSuit = LUDI_MODEL.cards.filter(c => c.dim === card.dim);
                     const dots = allStatesInSuit.map(s => `
-                        <div class="pos-dot ${s.val === card.val ? 'active' : ''}" 
+                        <div class="pos-dot ${s.val === card.val ? 'active' : ''}"
                              title="${s.label}"
                              onclick="event.stopPropagation(); game.changeCardState('${card.instanceId}', '${card.dim}', ${s.val})">
                         </div>`).join('');
@@ -598,8 +645,8 @@
                         menu.innerHTML = `
                             <button onclick="event.stopPropagation(); game.updateCard('${card.instanceId}', {isFlipped: !${card.isFlipped}})">FLIP</button>
                             <button onclick="event.stopPropagation(); game.updateCard('${card.instanceId}', {rotation: (game.hand[${idx}].rotation + 90) % 360})">ROTATE 90</button>
-                            ${card.stackedWith ? 
-                                `<button onclick="event.stopPropagation(); game.unstackCard('${card.instanceId}')">UNSTACK</button>` : 
+                            ${card.stackedWith ?
+                                `<button onclick="event.stopPropagation(); game.unstackCard('${card.instanceId}')">UNSTACK</button>` :
                                 `<button onclick="event.stopPropagation(); showStackModal('${card.instanceId}')">STACK...</button>`
                             }
                             <button onclick="event.stopPropagation(); game.hand.splice(${idx}, 1); game.updateDisplay();" style="color:red">DISCARD</button>
@@ -653,15 +700,15 @@
         function showSurveyModal() {
             const grid = document.getElementById('survey-grid');
             grid.innerHTML = '';
-            
+
             LUDI_MODEL.dimensions.forEach(dim => {
                 const row = document.createElement('div');
                 row.className = 'survey-row';
                 row.innerHTML = `<div class="survey-row-title">${dim.suit}</div>`;
-                
+
                 const optsCont = document.createElement('div');
                 optsCont.className = 'survey-options';
-                
+
                 const cards = LUDI_MODEL.cards.filter(c => c.dim === dim.id);
                 cards.forEach(c => {
                     const isActive = game.surveyChoices[dim.id] === c.val;
@@ -677,11 +724,11 @@
                         } else {
                             game.surveyChoices[dim.id] = c.val;
                         }
-                        showSurveyModal(); // Refresh UI
+                        showSurveyModal();
                     };
                     optsCont.appendChild(opt);
                 });
-                
+
                 row.appendChild(optsCont);
                 grid.appendChild(row);
             });
@@ -690,6 +737,9 @@
         }
 
         function hideSurveyModal() { document.getElementById('survey-modal').style.display = 'none'; }
+
+        function showAboutModal() { document.getElementById('about-modal').style.display = 'block'; }
+        function hideAboutModal() { document.getElementById('about-modal').style.display = 'none'; }
     </script>
 </body>
 </html>
