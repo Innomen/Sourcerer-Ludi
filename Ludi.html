@@ -297,11 +297,11 @@
         .survey-option-label { font-weight: 900; text-transform: uppercase; font-size: 1em; }
         .survey-option-desc { font-size: 0.8em; opacity: 0.8; }
 
-        .about-text h3 { 
-            margin-top: 25px; 
-            margin-bottom: 10px; 
-            border-bottom: 2px solid #000; 
-            display: inline-block; 
+        .about-text h3 {
+            margin-top: 25px;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #000;
+            display: inline-block;
         }
         .about-text p { margin-bottom: 15px; font-size: 0.95em; }
         .about-text ul { margin-bottom: 15px; padding-left: 20px; list-style: square; }
@@ -392,60 +392,69 @@
             <p>Regularity is just what’s given. Positing an unseen cause for it is both circular and superfluous. I limit my system to the fewest number of axioms possible for the same reason I respect burden of proof and parsimony.</p>
             <p>The only remaining problem is proving other minds feel things, which cannot be done, but that is operationally irrelevant because clearly they exist as sources of experience patterns. I choose not to be cruel. That’s the logical and phenomenological ground zero of any possible epistemology.</p>
             <p>To reject it is to step outside the possibility of having a view at all.</p>
-            
+
             <p style="margin-top:20px; font-size: 0.8em; border-top: 1px dashed #000; padding-top:10px;">
                 Based on the work more fully explored here: <a href="https://philpeople.org/profiles/brandon-sergent/publications" target="_blank">Brandon Sergent Publications</a>
             </p>
-            
+
             <button onclick="hideAboutModal()" style="width:100%; margin-top:20px; background: #000; color: #fff;">CLOSE</button>
         </div>
     </div>
 
     <script>
-        const LUDI_MODEL = {
+    const LUDI_MODEL = {
             dimensions: [
                 { id: 'I', suit: 'IDENTITY' }, { id: 'M', suit: 'MENTALITY' }, { id: 'F', suit: 'FOCUS' },
                 { id: 'A', suit: 'AFFECT' }, { id: 'S', suit: 'SENSORY' }, { id: 'T', suit: 'TEMPORAL' }
             ],
             cards: [
-                {dim: 'I', val: 0.00, label: 'Transcendent', desc: 'Self expanded beyond individual boundaries.'},
-                {dim: 'I', val: 0.17, label: 'Disrupted', desc: 'Self sense is fragmented or depersonalized.'},
-                {dim: 'I', val: 0.33, label: 'Social', desc: 'Self defined by relationships and roles.'},
-                {dim: 'I', val: 0.50, label: 'Narrative', desc: 'Self as a coherent story over time.'},
-                {dim: 'I', val: 0.67, label: 'Extended', desc: 'Self includes tools and environment.'},
-                {dim: 'I', val: 0.83, label: 'Minimal', desc: 'Basic pre-reflective bodily presence.'},
-                {dim: 'I', val: 1.00, label: 'Core', desc: 'Essential, unchanging sense of self.'},
+                {dim: 'I', val: 0.00, label: 'Witness', desc: 'Observing experience from a step back. (detached, metacognitive, spectating)'},
+                {dim: 'I', val: 0.17, label: 'Embodied', desc: 'Living primarily through bodily sensation. (somatic, sensorimotor, proprioceptive)'},
+                {dim: 'I', val: 0.33, label: 'Narrative', desc: 'Self as ongoing story through time. (autobiographical, character, temporal-self)'},
+                {dim: 'I', val: 0.50, label: 'Social', desc: 'Self defined through relational context. (mirrored, role-based, interpersonal)'},
+                {dim: 'I', val: 0.67, label: 'Dissolved', desc: 'No clear self-other boundary present. (boundaryless, merged, oceanic)'},
+                {dim: 'I', val: 0.83, label: 'Fragmented', desc: 'Self-sense broken into disconnected parts. (dissociated, multiple, disintegrated)'},
+                {dim: 'I', val: 1.00, label: 'Extended', desc: 'Self includes tools and environment. (distributed, tool-inclusive, environmental)'},
 
-                {dim: 'M', val: 0.00, label: 'Blank', desc: 'Complete absence of thought.'},
-                {dim: 'M', val: 0.20, label: 'Quiet', desc: 'Minimal cognitive chatter.'},
-                {dim: 'M', val: 0.40, label: 'Directed', desc: 'Linear, task-oriented thinking.'},
-                {dim: 'M', val: 0.60, label: 'Associative', desc: 'Fluid, creative connections.'},
-                {dim: 'M', val: 0.80, label: 'Hyper-Reflexive', desc: 'Intense self-monitoring thoughts.'},
-                {dim: 'M', val: 1.00, label: 'Hyperlucid', desc: 'Every thought crystalline and vivid.'},
+                {dim: 'M', val: 0.00, label: 'Silent', desc: 'Absence of verbal thought activity. (thoughtless, pre-verbal, empty)'},
+                {dim: 'M', val: 0.17, label: 'Verbal', desc: 'Thinking structured by language. (monologue, dialogue, linguistic)'},
+                {dim: 'M', val: 0.33, label: 'Imagistic', desc: 'Thinking through images and scenes. (visual, spatial, scenic)'},
+                {dim: 'M', val: 0.50, label: 'Conceptual', desc: 'Abstract ideas without sensory content. (analytical, philosophical, theoretical)'},
+                {dim: 'M', val: 0.67, label: 'Associative', desc: 'Rapid free-flowing thought connections. (creative, tangential, lateral)'},
+                {dim: 'M', val: 0.83, label: 'Recursive', desc: 'Thoughts about thoughts, looping back. (meta-cognitive, self-referential, circular)'},
+                {dim: 'M', val: 1.00, label: 'Intuitive', desc: 'Direct knowing without reasoning process. (felt-sense, non-rational, immediate)'},
 
-                {dim: 'F', val: 0.00, label: 'Scattered', desc: 'Complete distraction.'},
-                {dim: 'F', val: 0.25, label: 'Divided', desc: 'Attending to multiple streams.'},
-                {dim: 'F', val: 0.50, label: 'Baseline', desc: 'Normal attention focus.'},
-                {dim: 'F', val: 0.75, label: 'Narrowed', desc: 'High concentration on one area.'},
-                {dim: 'F', val: 1.00, label: 'Absorbed', desc: 'Total capture by a single point.'},
+                {dim: 'F', val: 0.00, label: 'Diffuse', desc: 'Unfocused awareness of whole field. (ambient, scattered, panoramic)'},
+                {dim: 'F', val: 0.17, label: 'Narrow', desc: 'Concentrated on single point or object. (single-pointed, absorbed, tunneled)'},
+                {dim: 'F', val: 0.33, label: 'Divided', desc: 'Genuinely attending multiple streams. (multi-tracked, split, parallel)'},
+                {dim: 'F', val: 0.50, label: 'Scanning', desc: 'Rapidly shifting between targets. (searching, vigilant, restless)'},
+                {dim: 'F', val: 0.67, label: 'Peripheral', desc: 'Focused on edges rather than center. (background-attentive, marginal, ambient-detail)'},
+                {dim: 'F', val: 0.83, label: 'Captured', desc: 'Involuntarily held by specific content. (fascinated, stuck, compelled)'},
+                {dim: 'F', val: 1.00, label: 'Oscillating', desc: 'Regular rhythm of engagement and release. (fluctuating, cycling, pulsing)'},
 
-                {dim: 'A', val: -1.00, label: 'Anguish', desc: 'Intense suffering dominates.'},
-                {dim: 'A', val: -0.50, label: 'Aversive', desc: 'Mildly unpleasant or resistant.'},
-                {dim: 'A', val: 0.00, label: 'Neutral', desc: 'Equanimous; neither pleasant nor unpleasant.'},
-                {dim: 'A', val: 0.50, label: 'Pleasant', desc: 'General sense of well-being.'},
-                {dim: 'A', val: 1.00, label: 'Blissful', desc: 'Intense flourishing.'},
+                {dim: 'A', val: 0.00, label: 'Elevated', desc: 'Positive affective expansion. (bliss, joy, excitement, elation)'},
+                {dim: 'A', val: 0.17, label: 'Peaceful', desc: 'Calm positive settledness. (content, serene, satisfied, tranquil)'},
+                {dim: 'A', val: 0.33, label: 'Neutral', desc: 'Neither pleasant nor unpleasant quality. (equanimous, flat, indifferent)'},
+                {dim: 'A', val: 0.50, label: 'Tense', desc: 'Uncomfortable activation and worry. (anxious, agitated, stressed, unsettled)'},
+                {dim: 'A', val: 0.67, label: 'Heavy', desc: 'Downward affective weight. (sad, grieving, depressed, collapsed)'},
+                {dim: 'A', val: 0.83, label: 'Aversive', desc: 'Active resistance and repulsion. (angry, irritated, disgusted, hostile)'},
+                {dim: 'A', val: 1.00, label: 'Complex', desc: 'Multiple contradictory affects present. (bittersweet, ambivalent, mixed, layered)'},
 
-                {dim: 'S', val: 0.00, label: 'Numb', desc: 'Complete sensory muting.'},
-                {dim: 'S', val: 0.25, label: 'Distant', desc: 'Muted or derealized perception.'},
-                {dim: 'S', val: 0.50, label: 'Baseline', desc: 'Normal perception.'},
-                {dim: 'S', val: 0.75, label: 'Vivid', desc: 'Enhanced sensory detail.'},
-                {dim: 'S', val: 1.00, label: 'Hyperreal', desc: 'Everything impossibly vivid.'},
+                {dim: 'S', val: 0.00, label: 'Heightened', desc: 'Intensified sensory vividness. (bright, sharp, hyperreal, amplified)'},
+                {dim: 'S', val: 0.17, label: 'Muted', desc: 'Dampened perceptual intensity. (dulled, softened, numb, subdued)'},
+                {dim: 'S', val: 0.33, label: 'Distant', desc: 'Sensations feel far away or unreal. (derealized, detached, foggy, dreamlike)'},
+                {dim: 'S', val: 0.50, label: 'Immersive', desc: 'Completely surrounded by sensory field. (enveloping, saturating, encompassing)'},
+                {dim: 'S', val: 0.67, label: 'Detailed', desc: 'Noticing fine-grained micro-features. (granular, textured, micro-focused, precise)'},
+                {dim: 'S', val: 0.83, label: 'Synesthetic', desc: 'Senses bleeding into each other. (cross-modal, blended, fused, merged)'},
+                {dim: 'S', val: 1.00, label: 'Structured', desc: 'Perception organized by pattern. (geometric, rhythmic, patterned, ordered)'},
 
-                {dim: 'T', val: 0.00, label: 'Timeless', desc: 'No time-sense or duration awareness.'},
-                {dim: 'T', val: 0.25, label: 'Dilated', desc: 'Time feels slow and expanded.'},
-                {dim: 'T', val: 0.50, label: 'Baseline', desc: 'Normal time-flow awareness.'},
-                {dim: 'T', val: 0.75, label: 'Compressed', desc: 'Time feels accelerated.'},
-                {dim: 'T', val: 1.00, label: 'Crystalline', desc: 'Perfect temporal certainty.'}
+                {dim: 'T', val: 0.00, label: 'Dilated', desc: 'Stretched slow-motion temporal flow. (expanded, protracted, elongated)'},
+                {dim: 'T', val: 0.17, label: 'Compressed', desc: 'Rapid accelerated time-sense. (condensed, rushing, hurried)'},
+                {dim: 'T', val: 0.33, label: 'Suspended', desc: 'Timeless eternal-now quality. (frozen, still, atemporal, eternal)'},
+                {dim: 'T', val: 0.50, label: 'Fragmented', desc: 'Discontinuous choppy moments. (skipping, broken, episodic, stuttering)'},
+                {dim: 'T', val: 0.67, label: 'Flowing', desc: 'Smooth seamless progression. (river-like, continuous, unbroken)'},
+                {dim: 'T', val: 0.83, label: 'Circular', desc: 'Looping recursive temporal structure. (déjà-vu, repeating, cyclical)'},
+                {dim: 'T', val: 1.00, label: 'Displaced', desc: 'Temporal focus elsewhere than now. (nostalgic, anticipated, past/future-oriented)'}
             ]
         };
 
@@ -455,7 +464,7 @@
                 this.deck = [];
                 this.selectedIndex = null;
                 this.savedStates = JSON.parse(localStorage.getItem('ludi_v1_states') || '{}');
-                this.surveyChoices = {}; 
+                this.surveyChoices = {};
                 this.newGame();
             }
 
