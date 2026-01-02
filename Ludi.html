@@ -3,208 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sourcerer Ludi | Experiential Frame Game</title>
+    <title>Sourcerer Ludi</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Arial', sans-serif;
-            background: #f5f5f5;
-            color: #222;
+            font-family: 'Courier New', Courier, monospace;
+            background: #fff;
+            color: #000;
             padding: 20px;
             line-height: 1.4;
         }
 
         .container {
-            max-width: 1100px;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
         header {
             text-align: center;
             margin-bottom: 25px;
-            border-bottom: 3px solid #000;
+            border-bottom: 4px solid #000;
             padding-bottom: 15px;
         }
 
         h1 {
-            font-size: 2.5em;
-            letter-spacing: 6px;
+            font-size: 2.8em;
+            letter-spacing: 4px;
             color: #000;
             margin-bottom: 5px;
             font-weight: 900;
-        }
-
-        .subtitle {
-            color: #666;
-            font-size: 0.8em;
-            letter-spacing: 2px;
             text-transform: uppercase;
         }
 
-        .controls {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        button {
-            background: #fff;
+        .subtitle {
             color: #000;
-            border: 2px solid #000;
-            padding: 10px 20px;
-            cursor: pointer;
-            font-family: 'Arial', sans-serif;
-            font-size: 0.9em;
-            font-weight: bold;
-            transition: all 0.2s;
-        }
-
-        button:hover {
-            background: #000;
-            color: #fff;
-        }
-
-        button:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-            background: #ccc;
-            border-color: #999;
-        }
-
-        .status {
-            text-align: center;
-            margin-bottom: 20px;
             font-size: 1em;
+            letter-spacing: 2px;
+            text-transform: uppercase;
             font-weight: bold;
         }
 
-        .hand {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
+        .state-panel {
+            background: #f0f0f0;
+            border: 4px solid #000;
+            padding: 15px;
             margin-bottom: 20px;
-        }
-
-        .card {
-            background: #fff;
-            border: 3px solid #000;
-            padding: 12px;
-            cursor: pointer;
-            transition: all 0.2s;
-            aspect-ratio: 2.5 / 3.5;
             display: flex;
             flex-direction: column;
-            position: relative;
+            gap: 10px;
         }
 
-        .card.missing {
-            opacity: 0.4;
-            border-style: dashed;
-            background: #fafafa;
-        }
-
-        .card:hover {
-            transform: translateY(-3px);
-            box-shadow: 4px 4px 0 #000;
-        }
-
-        .card-header {
+        .state-controls {
             display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 8px;
-            padding-bottom: 6px;
-            border-bottom: 2px solid #000;
+            gap: 10px;
+            align-items: center;
         }
 
-        .card-suit {
-            font-weight: 900;
-            font-size: 1.2em;
-            line-height: 1;
-        }
-
-        .card-value {
-            font-size: 0.7em;
-            color: #666;
-            font-weight: bold;
-        }
-
-        .card-label {
-            font-weight: bold;
-            font-size: 1.1em;
-            margin-bottom: 8px;
-            line-height: 1.1;
-        }
-
-        .card-desc {
-            font-size: 0.75em;
-            color: #444;
-            line-height: 1.3;
+        input[type="text"] {
+            padding: 8px;
+            border: 3px solid #000;
+            font-family: inherit;
             flex-grow: 1;
         }
 
-        .card-position {
+        .saved-states-list {
             display: flex;
-            gap: 3px;
-            margin-top: 8px;
-            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
-        .pos-dot {
-            width: 8px;
-            height: 8px;
-            background: #ddd;
-            border: 1px solid #999;
-        }
-
-        .pos-dot.active {
-            background: #000;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.9);
-            padding: 30px;
-            overflow-y: auto;
-            z-index: 1000;
-        }
-
-        .modal-content {
-            max-width: 850px;
-            margin: 0 auto;
+        .state-chip {
+            padding: 4px 10px;
             background: #fff;
-            padding: 40px;
-            color: #222;
-            border: 5px solid #000;
-        }
-
-        .modal h2 { margin-bottom: 20px; font-size: 2em; text-decoration: underline; }
-
-        /* Survey Styles */
-        .survey-row {
-            margin-bottom: 20px;
-            padding: 15px;
-            border: 1px solid #000;
-            background: #fff;
-        }
-
-        .survey-row.inactive {
-            opacity: 0.4;
-            background: #f0f0f0;
-        }
-
-        .survey-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-
-        .survey-toggle-box {
+            border: 2px solid #000;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -212,113 +83,271 @@
             font-weight: bold;
         }
 
-        .survey-label { font-weight: bold; font-size: 0.9em; text-transform: uppercase; }
-        .survey-value-display { font-family: 'Courier New', monospace; background: #000; color: #fff; padding: 2px 8px; font-size: 0.85em; }
-        .survey-slider { width: 100%; height: 12px; accent-color: #000; cursor: pointer; }
-        .survey-info { margin-top: 12px; background: #f9f9f9; padding: 12px; border-left: 3px solid #000; }
-        .survey-info b { display: block; margin-bottom: 4px; text-transform: uppercase; }
-        .survey-info p { margin: 0; font-size: 0.85em; color: #444; }
-
-        /* Save System UI */
-        .save-system {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 4px double #000;
+        .state-chip button {
+            padding: 1px 5px;
+            border-width: 1px;
+            font-size: 0.7em;
         }
 
-        .save-controls {
+        .controls {
             display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
         }
 
-        .save-input {
-            flex-grow: 1;
-            border: 2px solid #000;
-            padding: 8px;
+        .draw-options {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.8em;
+            border-left: 2px solid #000;
+            padding-left: 15px;
+            cursor: pointer;
+        }
+
+        .draw-options input { cursor: pointer; }
+
+        button {
+            background: #fff;
+            color: #000;
+            border: 3px solid #000;
+            padding: 8px 16px;
+            cursor: pointer;
             font-family: inherit;
+            font-size: 0.9em;
+            font-weight: 900;
+            transition: all 0.1s;
+            text-transform: uppercase;
         }
 
-        .saved-states-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 10px;
+        button:hover {
+            background: #000;
+            color: #fff;
+            box-shadow: 4px 4px 0 #000;
+            transform: translate(-2px, -2px);
         }
 
-        .state-chip {
-            border: 1px solid #000;
-            padding: 8px;
+        button:active {
+            transform: translate(0, 0);
+            box-shadow: none;
+        }
+
+        .status {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1em;
+            font-weight: bold;
+            border: 2px solid #000;
+            display: inline-block;
+            padding: 5px 20px;
+            left: 50%;
+            position: relative;
+            transform: translateX(-50%);
+        }
+
+        .hand {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            padding: 20px;
+            min-height: 400px;
+        }
+
+        .card-container {
+            position: relative;
+            transition: margin 0.3s ease;
+        }
+
+        .card {
+            background: #fff;
+            border: 4px solid #000;
+            padding: 15px;
+            width: 200px;
+            height: 280px;
+            cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            box-shadow: 6px 6px 0 #000;
+            user-select: none;
+        }
+
+        .card.is-flipped { background: #000; color: #fff; }
+        .card.is-flipped .card-content { display: none; }
+        .card-back-suit {
+            display: none;
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5em;
+            font-weight: 900;
+            text-align: center;
+            border: 2px solid #fff;
+            padding: 10px;
+            width: 85%;
+        }
+        .card.is-flipped .card-back-suit { display: block; }
+        .card.selected { outline: 6px solid #aaa; outline-offset: 4px; }
+
+        .card-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
+            margin-bottom: 10px;
+            padding-bottom: 6px;
+            border-bottom: 3px solid #000;
+        }
+
+        .card-suit { font-weight: 900; font-size: 1.1em; }
+        .card-label { font-weight: 900; font-size: 1.2em; margin-bottom: 10px; text-transform: uppercase; }
+        .card-desc { font-size: 0.8em; flex-grow: 1; }
+
+        .card-position {
+            display: flex;
+            gap: 6px;
+            margin-top: 10px;
+            justify-content: center;
+            padding-top: 10px;
+            border-top: 1px dashed #ccc;
+        }
+
+        .pos-dot { 
+            width: 14px; 
+            height: 14px; 
+            background: #fff; 
+            border: 2px solid #000; 
+            border-radius: 2px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .pos-dot:hover { background: #eee; }
+        .pos-dot.active { background: #000; box-shadow: inset 0 0 0 2px #fff; }
+
+        .card-menu {
+            position: absolute;
+            top: 0; left: 100%; margin-left: 15px; z-index: 100;
+            background: #fff; border: 4px solid #000; padding: 5px;
+            display: flex; flex-direction: column; gap: 5px; box-shadow: 4px 4px 0 #000; width: 160px;
+        }
+        .card-menu button { border: 1px solid #000; padding: 5px; font-size: 0.7em; text-align: left; width: 100%; color: #000; }
+
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255,255,255,0.95); padding: 30px; overflow-y: auto; z-index: 1000;
+        }
+        .modal-content { max-width: 900px; margin: 0 auto; background: #fff; padding: 40px; border: 8px solid #000; }
+        
+        .stack-select-item {
+            padding: 10px;
+            border: 2px solid #000;
+            margin-bottom: 8px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+        }
+        .stack-select-item:hover { background: #000; color: #fff; }
+
+        /* Survey Styles */
+        .survey-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin: 20px 0;
+        }
+        .survey-row {
+            border: 4px solid #000;
+            padding: 20px;
+            background: #fafafa;
+        }
+        .survey-row-title {
+            font-weight: 900;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            display: block;
+            border-bottom: 2px solid #000;
+            padding-bottom: 5px;
+        }
+        .survey-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 12px;
+        }
+        .survey-option {
+            padding: 12px;
+            border: 2px solid #000;
             font-size: 0.85em;
-            background: #f9f9f9;
+            cursor: pointer;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            transition: all 0.1s;
         }
-
-        .state-chip:hover { background: #eee; }
-
-        .chip-actions { display: flex; gap: 5px; }
-        .btn-mini { padding: 2px 6px; font-size: 0.7em; }
-
-        @media (max-width: 600px) {
-            .hand { grid-template-columns: repeat(2, 1fr); }
-        }
+        .survey-option:hover { background: #eee; }
+        .survey-option.active { background: #000; color: #fff; border-color: #000; }
+        .survey-option-label { font-weight: 900; text-transform: uppercase; font-size: 1em; }
+        .survey-option-desc { font-size: 0.8em; opacity: 0.8; }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
             <h1>SOURCERER LUDI</h1>
-            <div class="subtitle">The Experiential Frame Game</div>
+            <div class="subtitle">A Map of Conscious Experience</div>
         </header>
 
+        <div class="state-panel">
+            <div class="state-controls">
+                <input type="text" id="state-name" placeholder="NAME CURRENT CONFIGURATION...">
+                <button onclick="game.saveState()">SAVE STATE</button>
+            </div>
+            <div id="saved-states-list" class="saved-states-list"></div>
+        </div>
+
         <div class="controls">
-            <button onclick="game.drawCard()" id="draw-btn">DRAW CARD</button>
-            <button onclick="game.autoWin()" id="win-btn">AUTO-WIN</button>
-            <button onclick="showSurvey()">SURVEY / STATES</button>
-            <button onclick="game.newGame()">NEW GAME</button>
-            <button onclick="showAbout()">ABOUT</button>
+            <button onclick="game.drawCard()" id="draw-btn">DRAW</button>
+            <div class="draw-options">
+                <input type="checkbox" id="reveal-draw"> <label for="reveal-draw">REVEAL ON DRAW</label>
+            </div>
+            <button onclick="game.autoWin()">COHERE</button>
+            <button onclick="showSurveyModal()">SURVEY</button>
+            <button onclick="game.newGame()">RESET</button>
         </div>
 
         <div class="status">
-            <span id="hand-status">Hand: 0/6</span>
-            <span style="margin: 0 15px;">|</span>
-            <span id="deck-status">Deck: 0</span>
+            <span id="hand-status">HAND: 0</span> | <span id="deck-status">DECK: 0</span>
         </div>
 
         <div id="hand" class="hand"></div>
     </div>
 
-    <!-- About Modal -->
-    <div id="about-modal" class="modal">
+    <!-- Stack Modal -->
+    <div id="stack-modal" class="modal">
         <div class="modal-content">
-            <h2>SOURCERER LUDI</h2>
-            <p>Sourcerer Ludi is a phenomenological modeling tool disguised as a card game.</p>
-            <p><strong>EE Principles:</strong> Experience and logic are the only self-proving axioms. This game allows you to map experiential frames by defining attributes across six core dimensions.</p>
-            <button onclick="hideAbout()" style="width:100%; margin-top:20px; padding: 15px; font-size: 1.1em; background: #000; color: #fff;">RETURN TO GAME</button>
+            <h2>STACK WITH...</h2>
+            <div id="stack-list"></div>
+            <button onclick="hideStackModal()" style="width:100%; margin-top:20px;">CANCEL</button>
         </div>
     </div>
 
     <!-- Survey Modal -->
     <div id="survey-modal" class="modal">
         <div class="modal-content">
-            <h2>PHENOMENOLOGICAL SURVEY</h2>
-            <p style="font-size: 0.8em; margin-bottom: 20px; color: #666;">Use the toggle to represent "Inattention" (missing attributes).</p>
-            
-            <div id="survey-rows-container"></div>
-
-            <div class="save-system">
-                <h3>SAVED STATES</h3>
-                <div class="save-controls">
-                    <input type="text" id="state-name-input" class="save-input" placeholder="Name this experiential state...">
-                    <button onclick="saveCurrentState()">SAVE STATE</button>
-                </div>
-                <div id="saved-states-list" class="saved-states-list"></div>
-            </div>
-
-            <div style="display: flex; gap: 10px; margin-top: 30px; border-top: 2px solid #000; padding-top: 20px;">
-                <button onclick="applySurvey()" style="flex: 2; background: #000; color: #fff;">APPLY TO FRAME</button>
-                <button onclick="hideSurvey()" style="flex: 1;">CANCEL</button>
+            <h2>OBSERVATION SURVEY</h2>
+            <p style="font-size: 0.8em; margin-bottom: 20px;">Identify your current coordinates. Unselected dimensions will remain unknown (face-down).</p>
+            <div id="survey-grid" class="survey-grid"></div>
+            <div style="display: flex; gap: 10px;">
+                <button onclick="game.commitSurvey()" style="flex: 2; background: #000; color: #fff;">COMMIT STATE</button>
+                <button onclick="hideSurveyModal()" style="flex: 1;">CANCEL</button>
             </div>
         </div>
     </div>
@@ -326,12 +355,8 @@
     <script>
         const LUDI_MODEL = {
             dimensions: [
-                { id: 'I', suit: 'IDENTITY' },
-                { id: 'M', suit: 'MENTALITY' },
-                { id: 'F', suit: 'FOCUS' },
-                { id: 'A', suit: 'AFFECT' },
-                { id: 'S', suit: 'SENSORY' },
-                { id: 'T', suit: 'TEMPORAL' }
+                { id: 'I', suit: 'IDENTITY' }, { id: 'M', suit: 'MENTALITY' }, { id: 'F', suit: 'FOCUS' },
+                { id: 'A', suit: 'AFFECT' }, { id: 'S', suit: 'SENSORY' }, { id: 'T', suit: 'TEMPORAL' }
             ],
             cards: [
                 {dim: 'I', val: 0.00, label: 'Transcendent', desc: 'Self expanded beyond individual boundaries.'},
@@ -343,43 +368,34 @@
                 {dim: 'I', val: 1.00, label: 'Core', desc: 'Essential, unchanging sense of self.'},
 
                 {dim: 'M', val: 0.00, label: 'Blank', desc: 'Complete absence of thought.'},
-                {dim: 'M', val: 0.17, label: 'Dimmed', desc: 'Barely conscious thinking.'},
-                {dim: 'M', val: 0.33, label: 'Foggy', desc: 'Clouded cognition.'},
-                {dim: 'M', val: 0.50, label: 'Baseline', desc: 'Normal thinking clarity.'},
-                {dim: 'M', val: 0.67, label: 'Clear', desc: 'Sharp thinking, smooth flow.'},
-                {dim: 'M', val: 0.83, label: 'Brilliant', desc: 'Rapid, precise thought processing.'},
+                {dim: 'M', val: 0.20, label: 'Quiet', desc: 'Minimal cognitive chatter.'},
+                {dim: 'M', val: 0.40, label: 'Directed', desc: 'Linear, task-oriented thinking.'},
+                {dim: 'M', val: 0.60, label: 'Associative', desc: 'Fluid, creative connections.'},
+                {dim: 'M', val: 0.80, label: 'Hyper-Reflexive', desc: 'Intense self-monitoring thoughts.'},
                 {dim: 'M', val: 1.00, label: 'Hyperlucid', desc: 'Every thought crystalline and vivid.'},
 
                 {dim: 'F', val: 0.00, label: 'Scattered', desc: 'Complete distraction.'},
-                {dim: 'F', val: 0.17, label: 'Drifting', desc: 'Weak attention control.'},
-                {dim: 'F', val: 0.33, label: 'Restless', desc: 'Difficulty concentrating.'},
+                {dim: 'F', val: 0.25, label: 'Divided', desc: 'Attending to multiple streams.'},
                 {dim: 'F', val: 0.50, label: 'Baseline', desc: 'Normal attention focus.'},
-                {dim: 'F', val: 0.67, label: 'Engaged', desc: 'Good concentration on tasks.'},
-                {dim: 'F', val: 0.83, label: 'Locked', desc: 'Strong resistance to distraction.'},
+                {dim: 'F', val: 0.75, label: 'Narrowed', desc: 'High concentration on one area.'},
                 {dim: 'F', val: 1.00, label: 'Absorbed', desc: 'Total capture by a single point.'},
 
                 {dim: 'A', val: -1.00, label: 'Anguish', desc: 'Intense suffering dominates.'},
-                {dim: 'A', val: -0.67, label: 'Distressed', desc: 'Strong negative tone.'},
-                {dim: 'A', val: -0.33, label: 'Uneasy', desc: 'Mild discomfort or negative valence.'},
-                {dim: 'A', val: 0.00, label: 'Neutral', desc: 'Neither pleasant nor unpleasant.'},
-                {dim: 'A', val: 0.33, label: 'Pleasant', desc: 'Mild positive feeling.'},
-                {dim: 'A', val: 0.67, label: 'Joyful', desc: 'Strong positive tone and wellbeing.'},
+                {dim: 'A', val: -0.50, label: 'Aversive', desc: 'Mildly unpleasant or resistant.'},
+                {dim: 'A', val: 0.00, label: 'Neutral', desc: 'Equanimous; neither pleasant nor unpleasant.'},
+                {dim: 'A', val: 0.50, label: 'Pleasant', desc: 'General sense of well-being.'},
                 {dim: 'A', val: 1.00, label: 'Blissful', desc: 'Intense flourishing.'},
 
                 {dim: 'S', val: 0.00, label: 'Numb', desc: 'Complete sensory muting.'},
-                {dim: 'S', val: 0.17, label: 'Muted', desc: 'Very dull perception.'},
-                {dim: 'S', val: 0.33, label: 'Dim', desc: 'Low sensory intensity.'},
+                {dim: 'S', val: 0.25, label: 'Distant', desc: 'Muted or derealized perception.'},
                 {dim: 'S', val: 0.50, label: 'Baseline', desc: 'Normal perception.'},
-                {dim: 'S', val: 0.67, label: 'Vivid', desc: 'Enhanced perception.'},
-                {dim: 'S', val: 0.83, label: 'Heightened', desc: 'World feels unusually real.'},
+                {dim: 'S', val: 0.75, label: 'Vivid', desc: 'Enhanced sensory detail.'},
                 {dim: 'S', val: 1.00, label: 'Hyperreal', desc: 'Everything impossibly vivid.'},
 
                 {dim: 'T', val: 0.00, label: 'Timeless', desc: 'No time-sense or duration awareness.'},
-                {dim: 'T', val: 0.17, label: 'Confused', desc: 'Weak and uncertain time-sense.'},
-                {dim: 'T', val: 0.33, label: 'Hazy', desc: 'Unclear duration sense.'},
+                {dim: 'T', val: 0.25, label: 'Dilated', desc: 'Time feels slow and expanded.'},
                 {dim: 'T', val: 0.50, label: 'Baseline', desc: 'Normal time-flow awareness.'},
-                {dim: 'T', val: 0.67, label: 'Clear', desc: 'Good temporal awareness.'},
-                {dim: 'T', val: 0.83, label: 'Sharp', desc: 'Precise time-sense.'},
+                {dim: 'T', val: 0.75, label: 'Compressed', desc: 'Time feels accelerated.'},
                 {dim: 'T', val: 1.00, label: 'Crystalline', desc: 'Perfect temporal certainty.'}
             ]
         };
@@ -388,196 +404,292 @@
             constructor() {
                 this.hand = [];
                 this.deck = [];
+                this.selectedIndex = null;
+                this.savedStates = JSON.parse(localStorage.getItem('ludi_v1_states') || '{}');
+                this.surveyChoices = {}; // dimId -> val
                 this.newGame();
             }
+
             newGame() {
                 this.deck = [...LUDI_MODEL.cards].sort(() => Math.random() - 0.5);
                 this.hand = [];
-                for (let i = 0; i < 6; i++) this.drawCard();
+                this.selectedIndex = null;
+                for (let i = 0; i < 6; i++) { this.drawCard(); }
                 this.updateDisplay();
             }
+
             drawCard() {
-                if (this.hand.length >= 6) return;
                 if (this.deck.length === 0) {
                     this.deck = [...LUDI_MODEL.cards].sort(() => Math.random() - 0.5);
                 }
-                this.hand.push(this.deck.pop());
+                
+                const revealChecked = document.getElementById('reveal-draw')?.checked;
+                const isFlipped = !revealChecked;
+
+                const card = {
+                    ...this.deck.pop(),
+                    instanceId: Math.random().toString(36).substr(2, 9),
+                    rotation: 0,
+                    isFlipped: isFlipped,
+                    stackedWith: null
+                };
+                this.hand.push(card);
                 this.updateDisplay();
             }
-            discardCard(index) {
-                this.hand.splice(index, 1);
+
+            updateCard(id, updates) {
+                this.hand = this.hand.map(c => (c.instanceId === id ? {...c, ...updates} : c));
                 this.updateDisplay();
             }
+
+            changeCardState(id, dim, val) {
+                const newState = LUDI_MODEL.cards.find(c => c.dim === dim && c.val === val);
+                if (newState) {
+                    this.hand = this.hand.map(c => (c.instanceId === id ? {...c, ...newState} : c));
+                    this.updateDisplay();
+                }
+            }
+
             autoWin() {
+                const revealChecked = document.getElementById('reveal-draw')?.checked;
+                const isFlipped = !revealChecked;
+
                 this.hand = LUDI_MODEL.dimensions.map(d => {
                     const choices = LUDI_MODEL.cards.filter(c => c.dim === d.id);
-                    return {...choices[Math.floor(Math.random() * choices.length)], missing: false};
+                    return {
+                        ...choices[Math.floor(Math.random() * choices.length)], 
+                        instanceId: Math.random().toString(36).substr(2, 9),
+                        rotation: 0, 
+                        isFlipped: isFlipped, 
+                        stackedWith: null
+                    };
                 });
                 this.updateDisplay();
             }
+
+            commitSurvey() {
+                const finalCards = [];
+                for (const dim of LUDI_MODEL.dimensions) {
+                    const val = this.surveyChoices[dim.id];
+                    
+                    let template;
+                    let isFlipped = false;
+
+                    if (val !== undefined) {
+                        // User chose a state
+                        template = LUDI_MODEL.cards.find(c => c.dim === dim.id && c.val === val);
+                    } else {
+                        // Unanswered: pick random and hide
+                        const options = LUDI_MODEL.cards.filter(c => c.dim === dim.id);
+                        template = options[Math.floor(Math.random() * options.length)];
+                        isFlipped = true;
+                    }
+
+                    finalCards.push({
+                        ...template,
+                        instanceId: Math.random().toString(36).substr(2, 9),
+                        rotation: 0,
+                        isFlipped: isFlipped,
+                        stackedWith: null
+                    });
+                }
+                this.hand = finalCards;
+                this.updateDisplay();
+                hideSurveyModal();
+            }
+
+            saveState() {
+                const name = document.getElementById('state-name').value.trim();
+                if (!name) return;
+                const state = this.hand.map(c => ({ 
+                    dim: c.dim, 
+                    val: c.val, 
+                    isFlipped: c.isFlipped, 
+                    stackedWith: c.stackedWith,
+                    rotation: c.rotation
+                }));
+                this.savedStates[name] = state;
+                localStorage.setItem('ludi_v1_states', JSON.stringify(this.savedStates));
+                document.getElementById('state-name').value = '';
+                this.updateDisplay();
+            }
+
+            loadState(name) {
+                const state = this.savedStates[name];
+                this.hand = state.map(s => {
+                    const template = LUDI_MODEL.cards.find(c => c.dim === s.dim && c.val === s.val);
+                    return {
+                        ...template,
+                        instanceId: Math.random().toString(36).substr(2, 9),
+                        rotation: s.rotation || 0,
+                        isFlipped: s.isFlipped,
+                        stackedWith: s.stackedWith || null
+                    };
+                });
+                this.updateDisplay();
+            }
+
+            deleteState(name) {
+                delete this.savedStates[name];
+                localStorage.setItem('ludi_v1_states', JSON.stringify(this.savedStates));
+                this.updateDisplay();
+            }
+
+            stackCard(childId, parentId) {
+                this.hand = this.hand.map(c => c.instanceId === childId ? {...c, stackedWith: parentId} : c);
+                this.selectedIndex = null;
+                hideStackModal();
+                this.updateDisplay();
+            }
+
+            unstackCard(id) {
+                this.hand = this.hand.map(c => c.instanceId === id ? {...c, stackedWith: null} : c);
+                this.updateDisplay();
+            }
+
+            selectCard(index) {
+                this.selectedIndex = (this.selectedIndex === index) ? null : index;
+                this.updateDisplay();
+            }
+
             updateDisplay() {
                 const handDiv = document.getElementById('hand');
                 handDiv.innerHTML = '';
-                const order = LUDI_MODEL.dimensions.map(d => d.id);
-                this.hand.sort((a, b) => order.indexOf(a.dim) - order.indexOf(b.dim));
-
+                
                 this.hand.forEach((card, idx) => {
-                    const suit = LUDI_MODEL.dimensions.find(d => d.id === card.dim).suit;
-                    const el = document.createElement('div');
-                    el.className = `card ${card.missing ? 'missing' : ''}`;
-                    el.onclick = () => this.discardCard(idx);
+                    const dimInfo = LUDI_MODEL.dimensions.find(d => d.id === card.dim);
+                    const container = document.createElement('div');
+                    container.className = 'card-container';
                     
-                    if (card.missing) {
-                        el.innerHTML = `<div class="card-suit">${suit}</div><div style="margin-top:auto; font-size:0.8em; font-weight:bold; color:#999;">[ UNATTENDED ]</div>`;
-                    } else {
-                        const valMap = LUDI_MODEL.cards.filter(c => c.dim === card.dim).map(c => c.val);
-                        const dots = valMap.map(v => `<div class="pos-dot ${v === card.val ? 'active' : ''}"></div>`).join('');
-                        el.innerHTML = `
+                    if (card.stackedWith) {
+                        container.style.marginLeft = "-160px";
+                        container.style.marginTop = "40px";
+                        container.style.zIndex = idx + 10;
+                    }
+
+                    const el = document.createElement('div');
+                    el.className = `card ${card.isFlipped ? 'is-flipped' : ''} ${this.selectedIndex === idx ? 'selected' : ''}`;
+                    el.style.transform = `rotate(${card.rotation}deg)`;
+                    el.onclick = (e) => { e.stopPropagation(); this.selectCard(idx); };
+
+                    const allStatesInSuit = LUDI_MODEL.cards.filter(c => c.dim === card.dim);
+                    const dots = allStatesInSuit.map(s => `
+                        <div class="pos-dot ${s.val === card.val ? 'active' : ''}" 
+                             title="${s.label}"
+                             onclick="event.stopPropagation(); game.changeCardState('${card.instanceId}', '${card.dim}', ${s.val})">
+                        </div>`).join('');
+
+                    el.innerHTML = `
+                        <div class="card-back-suit">${dimInfo.suit}</div>
+                        <div class="card-content">
                             <div class="card-header">
-                                <div class="card-suit">${suit}</div>
-                                <div class="card-value">${card.val.toFixed(2)}</div>
+                                <div class="card-suit">${dimInfo.suit}</div>
+                                <div class="card-value">ID: ${card.dim}</div>
                             </div>
                             <div class="card-label">${card.label}</div>
                             <div class="card-desc">${card.desc}</div>
                             <div class="card-position">${dots}</div>
+                        </div>
+                    `;
+
+                    if (this.selectedIndex === idx) {
+                        const menu = document.createElement('div');
+                        menu.className = 'card-menu';
+                        menu.innerHTML = `
+                            <button onclick="event.stopPropagation(); game.updateCard('${card.instanceId}', {isFlipped: !${card.isFlipped}})">FLIP</button>
+                            <button onclick="event.stopPropagation(); game.updateCard('${card.instanceId}', {rotation: (game.hand[${idx}].rotation + 90) % 360})">ROTATE 90</button>
+                            ${card.stackedWith ? 
+                                `<button onclick="event.stopPropagation(); game.unstackCard('${card.instanceId}')">UNSTACK</button>` : 
+                                `<button onclick="event.stopPropagation(); showStackModal('${card.instanceId}')">STACK...</button>`
+                            }
+                            <button onclick="event.stopPropagation(); game.hand.splice(${idx}, 1); game.updateDisplay();" style="color:red">DISCARD</button>
+                            <button onclick="event.stopPropagation(); game.selectCard(null)">CLOSE</button>
                         `;
+                        container.appendChild(menu);
                     }
-                    handDiv.appendChild(el);
+                    container.appendChild(el);
+                    handDiv.appendChild(container);
                 });
-                document.getElementById('hand-status').textContent = `Hand: ${this.hand.length}/6`;
-                document.getElementById('deck-status').textContent = `Deck: ${this.deck.length}`;
-                document.getElementById('draw-btn').disabled = this.hand.length >= 6;
+
+                document.getElementById('hand-status').textContent = `HAND: ${this.hand.length}`;
+                document.getElementById('deck-status').textContent = `DECK: ${this.deck.length}`;
+
+                const stateList = document.getElementById('saved-states-list');
+                stateList.innerHTML = '';
+                Object.keys(this.savedStates).forEach(name => {
+                    const chip = document.createElement('div');
+                    chip.className = 'state-chip';
+                    chip.innerHTML = `
+                        <span>${name}</span>
+                        <button onclick="game.loadState('${name}')">LOAD</button>
+                        <button onclick="game.deleteState('${name}')" style="color:red">X</button>
+                    `;
+                    stateList.appendChild(chip);
+                });
             }
         }
 
         const game = new LudiEngine();
+        document.body.onclick = () => game.selectCard(null);
 
-        // SURVEY & SAVE SYSTEM
-        let savedStates = JSON.parse(localStorage.getItem('ludi_states')) || {};
+        function showStackModal(childId) {
+            const list = document.getElementById('stack-list');
+            list.innerHTML = '';
+            game.hand.forEach(card => {
+                if (card.instanceId !== childId && !card.stackedWith) {
+                    const dimInfo = LUDI_MODEL.dimensions.find(d => d.id === card.dim);
+                    const item = document.createElement('div');
+                    item.className = 'stack-select-item';
+                    item.innerHTML = `<span>${dimInfo.suit}</span> <span>${card.label}</span>`;
+                    item.onclick = (e) => { e.stopPropagation(); game.stackCard(childId, card.instanceId); };
+                    list.appendChild(item);
+                }
+            });
+            document.getElementById('stack-modal').style.display = 'block';
+        }
 
-        function initSurvey() {
-            const container = document.getElementById('survey-rows-container');
-            container.innerHTML = '';
+        function hideStackModal() { document.getElementById('stack-modal').style.display = 'none'; }
+
+        function showSurveyModal() {
+            const grid = document.getElementById('survey-grid');
+            grid.innerHTML = '';
+            
             LUDI_MODEL.dimensions.forEach(dim => {
                 const row = document.createElement('div');
                 row.className = 'survey-row';
-                row.id = `row-${dim.id}`;
-                row.innerHTML = `
-                    <div class="survey-header">
-                        <span class="survey-label">${dim.suit}</span>
-                        <div class="survey-toggle-box">
-                            <input type="checkbox" checked id="tg-${dim.id}" onchange="toggleDim('${dim.id}')">
-                            <label for="tg-${dim.id}">ATTENDING</label>
-                            <span class="survey-value-display" id="sv-${dim.id}">0.50</span>
-                        </div>
-                    </div>
-                    <div id="sl-ctrl-${dim.id}">
-                        <input type="range" class="survey-slider" id="sl-${dim.id}" min="0" max="6" value="3" oninput="syncSurvey('${dim.id}')">
-                        <div class="survey-info">
-                            <b id="sl-lbl-${dim.id}">Baseline</b>
-                            <p id="sl-dsc-${dim.id}">Loading...</p>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(row);
-                syncSurvey(dim.id);
+                row.innerHTML = `<div class="survey-row-title">${dim.suit}</div>`;
+                
+                const optsCont = document.createElement('div');
+                optsCont.className = 'survey-options';
+                
+                const cards = LUDI_MODEL.cards.filter(c => c.dim === dim.id);
+                cards.forEach(c => {
+                    const isActive = game.surveyChoices[dim.id] === c.val;
+                    const opt = document.createElement('div');
+                    opt.className = `survey-option ${isActive ? 'active' : ''}`;
+                    opt.innerHTML = `
+                        <div class="survey-option-label">${c.label}</div>
+                        <div class="survey-option-desc">${c.desc}</div>
+                    `;
+                    opt.onclick = () => {
+                        if (isActive) {
+                            delete game.surveyChoices[dim.id];
+                        } else {
+                            game.surveyChoices[dim.id] = c.val;
+                        }
+                        showSurveyModal(); // Refresh UI
+                    };
+                    optsCont.appendChild(opt);
+                });
+                
+                row.appendChild(optsCont);
+                grid.appendChild(row);
             });
-            renderSavedStates();
+
+            document.getElementById('survey-modal').style.display = 'block';
         }
 
-        function toggleDim(dimId) {
-            const active = document.getElementById(`tg-${dimId}`).checked;
-            const row = document.getElementById(`row-${dimId}`);
-            const ctrl = document.getElementById(`sl-ctrl-${dimId}`);
-            const valDisplay = document.getElementById(`sv-${dimId}`);
-            
-            if (active) {
-                row.classList.remove('inactive');
-                ctrl.style.display = 'block';
-                valDisplay.style.visibility = 'visible';
-            } else {
-                row.classList.add('inactive');
-                ctrl.style.display = 'none';
-                valDisplay.style.visibility = 'hidden';
-            }
-        }
-
-        function syncSurvey(dimId) {
-            const idx = document.getElementById(`sl-${dimId}`).value;
-            const dimCards = LUDI_MODEL.cards.filter(c => c.dim === dimId);
-            const card = dimCards[idx];
-            document.getElementById(`sv-${dimId}`).textContent = card.val.toFixed(2);
-            document.getElementById(`sl-lbl-${dimId}`).textContent = card.label;
-            document.getElementById(`sl-dsc-${dimId}`).textContent = card.desc;
-        }
-
-        function applySurvey() {
-            game.hand = LUDI_MODEL.dimensions.map(dim => {
-                const attending = document.getElementById(`tg-${dim.id}`).checked;
-                const idx = document.getElementById(`sl-${dim.id}`).value;
-                const card = LUDI_MODEL.cards.filter(c => c.dim === dim.id)[idx];
-                return { ...card, missing: !attending };
-            });
-            hideSurvey();
-            game.updateDisplay();
-        }
-
-        // STATE PERSISTENCE logic
-        function saveCurrentState() {
-            const name = document.getElementById('state-name-input').value.trim();
-            if (!name) return;
-            
-            const state = LUDI_MODEL.dimensions.map(dim => ({
-                id: dim.id,
-                valIndex: document.getElementById(`sl-${dim.id}`).value,
-                attending: document.getElementById(`tg-${dim.id}`).checked
-            }));
-
-            savedStates[name] = state;
-            localStorage.setItem('ludi_states', JSON.stringify(savedStates));
-            document.getElementById('state-name-input').value = '';
-            renderSavedStates();
-        }
-
-        function loadState(name) {
-            const state = savedStates[name];
-            state.forEach(s => {
-                const sl = document.getElementById(`sl-${s.id}`);
-                const tg = document.getElementById(`tg-${s.id}`);
-                if (sl) sl.value = s.valIndex;
-                if (tg) tg.checked = s.attending;
-                toggleDim(s.id);
-                syncSurvey(s.id);
-            });
-        }
-
-        function deleteState(name) {
-            delete savedStates[name];
-            localStorage.setItem('ludi_states', JSON.stringify(savedStates));
-            renderSavedStates();
-        }
-
-        function renderSavedStates() {
-            const list = document.getElementById('saved-states-list');
-            list.innerHTML = '';
-            Object.keys(savedStates).forEach(name => {
-                const chip = document.createElement('div');
-                chip.className = 'state-chip';
-                chip.innerHTML = `
-                    <span>${name}</span>
-                    <div class="chip-actions">
-                        <button class="btn-mini" onclick="loadState('${name}')">LOAD</button>
-                        <button class="btn-mini" onclick="deleteState('${name}')">X</button>
-                    </div>
-                `;
-                list.appendChild(chip);
-            });
-        }
-
-        function showSurvey() { initSurvey(); document.getElementById('survey-modal').style.display = 'block'; }
-        function hideSurvey() { document.getElementById('survey-modal').style.display = 'none'; }
-        function showAbout() { document.getElementById('about-modal').style.display = 'block'; }
-        function hideAbout() { document.getElementById('about-modal').style.display = 'none'; }
+        function hideSurveyModal() { document.getElementById('survey-modal').style.display = 'none'; }
     </script>
 </body>
 </html>
