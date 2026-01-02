@@ -404,8 +404,12 @@
     <script>
     const LUDI_MODEL = {
             dimensions: [
-                { id: 'I', suit: 'IDENTITY' }, { id: 'M', suit: 'MENTALITY' }, { id: 'F', suit: 'FOCUS' },
-                { id: 'A', suit: 'AFFECT' }, { id: 'S', suit: 'SENSORY' }, { id: 'T', suit: 'TEMPORAL' }
+                { id: 'I', suit: 'IDENTITY', question: 'What are you right now?' },
+                { id: 'M', suit: 'MENTALITY', question: "How's your thinking?" },
+                { id: 'F', suit: 'FOCUS', question: "How's your focus?" },
+                { id: 'A', suit: 'AFFECT', question: 'How do you feel?' },
+                { id: 'S', suit: 'SENSORY', question: 'Is any specific sense overwhelming?' },
+                { id: 'T', suit: 'TEMPORAL', question: "What's time doing?" }
             ],
             cards: [
                 {dim: 'I', val: 0.00, label: 'Agent', desc: 'Initiator and author of experience. (executive, commanding, sovereign, lucid-meta)'},
@@ -440,13 +444,13 @@
                 {dim: 'A', val: 0.83, label: 'Aversive', desc: 'Active resistance and repulsion. (angry, irritated, disgusted, hostile)'},
                 {dim: 'A', val: 1.00, label: 'Complex', desc: 'Multiple contradictory affects present. (bittersweet, ambivalent, mixed, layered)'},
 
-                {dim: 'S', val: 0.00, label: 'Heightened', desc: 'Intensified sensory vividness. (bright, sharp, hyperreal, amplified)'},
-                {dim: 'S', val: 0.17, label: 'Muted', desc: 'Dampened perceptual intensity. (dulled, softened, numb, subdued)'},
-                {dim: 'S', val: 0.33, label: 'Distant', desc: 'Sensations feel far away or unreal. (derealized, detached, foggy, dreamlike)'},
-                {dim: 'S', val: 0.50, label: 'Immersive', desc: 'Completely surrounded by sensory field. (enveloping, saturating, encompassing)'},
-                {dim: 'S', val: 0.67, label: 'Detailed', desc: 'Noticing fine-grained micro-features. (granular, textured, micro-focused, precise)'},
-                {dim: 'S', val: 0.83, label: 'Synesthetic', desc: 'Senses bleeding into each other. (cross-modal, blended, fused, merged)'},
-                {dim: 'S', val: 1.00, label: 'Structured', desc: 'Perception organized by pattern. (geometric, rhythmic, patterned, ordered)'},
+                {dim: 'S', val: 0.00, label: 'Visual', desc: 'Sight overwhelming awareness. (color, brightness, patterns, movement, light)'},
+                {dim: 'S', val: 0.17, label: 'Auditory', desc: 'Sound dominating experience. (noise, music, voices, silence, rhythm)'},
+                {dim: 'S', val: 0.33, label: 'Tactile', desc: 'Touch consuming attention. (pressure, texture, contact, temperature, skin)'},
+                {dim: 'S', val: 0.50, label: 'Olfactory', desc: 'Smell filling awareness. (scent, fragrance, odor, aroma)'},
+                {dim: 'S', val: 0.67, label: 'Gustatory', desc: 'Taste prominent in field. (flavor, mouth-sensation, aftertaste)'},
+                {dim: 'S', val: 0.83, label: 'Somatic', desc: 'Body-sensation dominant. (pain, tension, internal-feeling, proprioception, breath)'},
+                {dim: 'S', val: 1.00, label: 'Synesthetic', desc: 'Multiple senses blending or competing. (cross-modal, merged, sensory-chaos)'},
 
                 {dim: 'T', val: 0.00, label: 'Dilated', desc: 'Stretched slow-motion temporal flow. (expanded, protracted, elongated)'},
                 {dim: 'T', val: 0.17, label: 'Compressed', desc: 'Rapid accelerated time-sense. (condensed, rushing, hurried)'},
@@ -640,7 +644,6 @@
                         <div class="card-content">
                             <div class="card-header">
                                 <div class="card-suit">${dimInfo.suit}</div>
-                                <div class="card-value">ID: ${card.dim}</div>
                             </div>
                             <div class="card-label">${card.label}</div>
                             <div class="card-desc">${card.desc}</div>
@@ -713,7 +716,7 @@
             LUDI_MODEL.dimensions.forEach(dim => {
                 const row = document.createElement('div');
                 row.className = 'survey-row';
-                row.innerHTML = `<div class="survey-row-title">${dim.suit}</div>`;
+                row.innerHTML = `<div class="survey-row-title">${dim.suit}: ${dim.question}</div>`;
 
                 const optsCont = document.createElement('div');
                 optsCont.className = 'survey-options';
